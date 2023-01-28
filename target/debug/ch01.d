@@ -1,0 +1,1 @@
+C:\Users\thier\Desktop\Projects\Rustprojects\raytracer\target\debug\ch01.exe: C:\Users\thier\Desktop\Projects\Rustprojects\raytracer\src\bin\ch01.rs C:\Users\thier\Desktop\Projects\Rustprojects\raytracer\src\canvas.rs C:\Users\thier\Desktop\Projects\Rustprojects\raytracer\src\lib.rs C:\Users\thier\Desktop\Projects\Rustprojects\raytracer\src\tuple.rs

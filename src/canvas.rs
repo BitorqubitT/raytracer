@@ -2,6 +2,7 @@ use std::array;
 use std::ops::{Add, Sub, Mul};
 use std::vec::Vec;
 
+// Lets commit this
 // Finish writing to ppm
 // Still need to finish this
 // Current solution seems VERY impractical

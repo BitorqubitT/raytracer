@@ -11,11 +11,8 @@ pub struct Tuple {
    pub w: f64,
     }
 
-// Types of tuples
 impl Tuple {
 
-    // We create this so we can use Tuple::NEW 
-    // What advantages does this give?
     pub fn new(x: f64, y: f64, z: f64, w: f64) -> Self {
             Tuple { x, y, z, w}
     }
@@ -41,7 +38,6 @@ impl Tuple {
 //    }
 //}
 
-// Operations on tuples
 // should i use: Add<Self>  ?????
 impl Add for Tuple{
     type Output = Self;
@@ -81,15 +77,6 @@ impl Neg for Tuple{
 // We call self.x etc here because we alter the input tuple.
 // We dont return anything but the tuple.
 
-//impl MulAssign<f64> for Tuple{
-//    fn mul_assign(&mut self, rhs: f64) {
-//        self.x *= rhs;
-//       self.y *= rhs;
-//        self.z *= rhs;
-//        self.w *= rhs;   
-//    }
-//} 
-
 impl Mul<f64> for Tuple {
     type Output = Self;
 
@@ -117,7 +104,6 @@ impl Div<f64> for Tuple {
 }
 
 // Why the & before self
-// Math operations on Tuples
 impl Tuple{
 
     pub fn magnitude(&self) -> f64{
@@ -139,10 +125,6 @@ impl Tuple{
     }
 
     pub fn cross(&self, other: Tuple) -> Tuple{
-        //if !self.vector_check() || !other.vector_check() {
-        //    panic!("Can only calculate the cross product of two vectors!");
-        //}
-
         Tuple::vector ( (self.y * other.z) - (self.z * other.y),
                         (self.z * other.x) - (self.x * other.z),
                         (self.x * other.y) - (self.y * other.x),
@@ -150,7 +132,6 @@ impl Tuple{
     }
 }
 
-// WHAT IS THIS
 #[cfg(test)]
 mod tests {
 

@@ -2,13 +2,15 @@ use std::array;
 use std::ops::{Add, Sub, Mul};
 use std::vec::Vec;
 
-// Lets commit this
+// TODO
 // Finish writing to ppm
-// Still need to finish this
-// Current solution seems VERY impractical
+// Do I actually write to file already?
+// Add /n;s
 // then continue page 20
-// Canvas to ppm seems to work.
-// Fix value < 0 and > 255 issue.
+
+// Can use cargo test canvas -- --nocapture
+// This shows prints
+// Why do the test not run in the right order?
 
 #[derive(Debug, Copy, Clone)]
 pub struct Color {
@@ -19,12 +21,11 @@ pub struct Color {
 
 #[derive(Debug)]
 pub struct Canvas {
+
+    // TODO
     // Maybe increase this dtype.
     pub width: usize,
     pub height: usize,  
-    // Is vec the best solution to hold tuples?
-    // Vec needs to know what datatype it will use.
-    // Can you use a combination ?
     pixels: Vec<Color>,
 }
 
@@ -37,7 +38,6 @@ impl Color{
 
 impl Add for Color{
     type Output = Self;
-// check rhs of self
 // rhs vs other, rhs makes sense
     fn add(self, other: Color) -> Self::Output {
         Color::new(self.red + other.red, 
@@ -70,7 +70,7 @@ impl Mul<f64> for Color{
 impl Color{
     // Why use & here?
     // If the body has no return
-    // It returns whatever is in thet ()
+    // It returns whatever is in the ()
     pub fn hadamard_product(&self, other: Color) -> Color{
         Color::new (self.red * other.red,
                   self.green * other.green,
@@ -91,7 +91,6 @@ impl Canvas{
 
     pub fn pixel_at(&self, x: usize, y: usize) -> Color {
         
-        // This is basically vec[calc_pixel(x,y)].
         self.pixels[self.calc_pixel_index(x, y)]
     }
 
@@ -104,7 +103,6 @@ impl Canvas{
     }
     
     // Why the &self here
-    // Does this even make sense?
     pub fn calc_pixel_index(&self, x: usize, y: usize) -> usize {
         y * self.width + x
     }
@@ -116,14 +114,11 @@ impl Canvas{
                                       {} {}\n\
                                       255", self.width, self.height );
 
-        // Colors now would be numbers between 0 and 1.
-        // However we need to scale between 0 and max in header file.
-        // 255 should be put in a variable or param.
-
         // TODO:
         // Write new vector to ppm
-        // How do we deal with too long lines?, I dont understand
+        // How do we deal with too long lines?
         // What if our image exceeds the 70/3 width
+        // 255 should be put in a variable or param.
         
         // let mut hold_new_rgb = vec![0.0; self.width * self.height * 3];
 
@@ -131,7 +126,6 @@ impl Canvas{
         let mut normalised_rgb = Vec::new();
         let mut counter = 0;
         println!("lalalalaa,{},{}", self.width, self.height);
-        // 0..self.height-1
         
         for j in 0..self.height {
             for i in 0..self.width {
@@ -139,20 +133,29 @@ impl Canvas{
 
                 // Can change this to pixel_at.red etc
                 let m = self.pixel_at(i, j);
-                let red = m.red * 255.0;
-                let green = m.green * 255.0;
-                let blue = m.blue * 255.0;
+                let mut red = m.red * 255.0;
+                let mut green = m.green * 255.0;
+                let mut blue = m.blue * 255.0;
 
-                // Here we should create something which check upper and lower bound before pushing.
-                // What is the most logical fix for this?
-                // I shouldnt do this for every color
-                // Can i loop over red green blue?
-                // Or generalise it somehow
+                // TODO:
+                // Code feels bad, how to fix thix?
+                // Is this a correct way of using mut?
+                // Rounding? or should integers be used?
                 if red > 255.0 {
-                    println!("red is, {}", red);
-                    let red = 255.0;
+                    red = 255.0;
                 } else if red < 0.0 {
-                    let red = 0.0;
+                    red = 0.0;
+                }
+
+                if green > 255.0 {
+                    green = 255.0;
+                } else if green < 0.0 {
+                    green = 0.0;
+                }
+                if blue > 255.0 {
+                    blue = 255.0;
+                } else if blue < 0.0 {
+                    blue = 0.0;
                 }
 
                 normalised_rgb.push(red);
@@ -257,7 +260,7 @@ mod tests {
         let rood = Color::new(24.0, 250.0, 20.0);
         new_canvas.write_pixel(6, 6, rood);
 
-        // prob want a better/easier way to just check, is pixel red or not
+        // TODO:
         // Compare the whole vector
         let pixel = new_canvas.pixel_at(6, 6);
         assert!(pixel.red == 24.0);
@@ -272,9 +275,8 @@ mod tests {
         let test_header = format!("P3\n\
                                           10 20\n\
                                           255");
-        // Can use cargo test canvas -- --nocapture
-        // This shows prints
         let header = new_canvas.canvas_to_ppm();
+        //println!("{:?}", test_header);
         assert!(test_header == header);
     }
 
@@ -297,6 +299,15 @@ mod tests {
 }
 
 
+    #[test]
+    fn canvas_to_ppm_longer_lines() {
+        let mut new_canvas = Canvas::new(10, 2);
 
+        let rainbow = Color::new(1.0, 0.8, 0.6);
+
+        //TODO:
+        //Loop and set every pixel to rainbow color
+        // convert to ppm format.
+    }
 
 

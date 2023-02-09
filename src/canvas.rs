@@ -12,6 +12,10 @@ use std::vec::Vec;
 // This shows prints
 // Why do the test not run in the right order?
 
+// Find more efficient way to check boundaries on the colors
+// Can I convert the struct to an array with a method?
+// If this a desired solution?
+
 #[derive(Debug, Copy, Clone)]
 pub struct Color {
     pub red: f64,
@@ -35,6 +39,17 @@ impl Color{
         Color {red, green, blue}
     }
 }
+
+// TODO:
+// Is this a good solution?
+impl Color{
+    
+    pub fn as_array(&self) -> [f64; 3] {
+        [self.red, self.green, self.blue]
+    }
+}
+
+
 
 impl Add for Color{
     type Output = Self;
@@ -132,10 +147,18 @@ impl Canvas{
                 println!("ffffff, {},{},{}", counter, i, j);
 
                 // Can change this to pixel_at.red etc
-                let m = self.pixel_at(i, j);
-                let mut red = m.red * 255.0;
-                let mut green = m.green * 255.0;
-                let mut blue = m.blue * 255.0;
+                let mut m = self.pixel_at(i, j);
+                //let mut red = m.red * 255.0;
+                //let mut green = m.green * 255.0;
+                //let mut blue = m.blue * 255.0;
+
+                for i in m {
+                    if i > 255.0 {
+                        i = 255.0;
+                    } else if i < 0.0 {
+                        i = 0.0
+                    }
+                }
 
                 // TODO:
                 // Code feels bad, how to fix thix?

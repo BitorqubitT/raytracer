@@ -131,7 +131,6 @@ impl Canvas{
 
         // TODO:
         // Write new vector to ppm
-        // How do we deal with too long lines?
         // What if our image exceeds the 70/3 width
         // 255 should be put in a variable or param.
         

@@ -12,9 +12,6 @@ use std::vec::Vec;
 // This shows prints
 // Why do the test not run in the right order?
 
-// Find more efficient way to check boundaries on the colors
-// Can I convert the struct to an array with a method?
-// Is this a desired solution?
 
 #[derive(Debug, Copy, Clone)]
 pub struct Color {
@@ -94,6 +91,37 @@ impl Color{
     }
 }
 
+// Scale colors for ppm file
+impl Color{
+    pub fn scale_colors(&mut self) {
+        // Good spot to rescale here?
+        // And do we want to change the values in struct color?
+
+        self.red = self.red * 255.0;
+        self.blue = self.blue * 255.0;
+        self.green = self.green * 255.0;
+
+        if self.red > 255.0 {
+            self.red = 255.0;
+        } else if self.red < 0.0 {
+            self.red = 0.0;
+        }
+
+        if self.green > 255.0 {
+            self.green = 255.0;
+        } else if self.green < 0.0 {
+            self.green = 0.0;
+        }
+
+        if self.blue > 255.0 {
+            self.blue = 255.0;
+        } else if self.blue < 0.0 {
+            self.blue = 0.0;
+        }
+    }
+}
+
+
 impl Canvas{
 // We dont need to give a canvas to these methods.
 // We just use self because we can only call these methods on canvas, which is self.
@@ -133,66 +161,22 @@ impl Canvas{
         // Write new vector to ppm
         // What if our image exceeds the 70/3 width
         // 255 should be put in a variable or param.
-        
-        // let mut hold_new_rgb = vec![0.0; self.width * self.height * 3];
-
-        // Hold the normalised values.
         let mut normalised_rgb = Vec::new();
-        let mut counter = 0;
-        println!("lalalalaa,{},{}", self.width, self.height);
         
         for j in 0..self.height {
             for i in 0..self.width {
-                println!("ffffff, {},{},{}", counter, i, j);
 
-                // Can change this to pixel_at.red etc
                 let mut m = self.pixel_at(i, j);
-                let mut red = m.red * 255.0;
-                //let mut green = m.green * 255.0;
-                //let mut blue = m.blue * 255.0;
-                
+                println!("alalaal, {}, {}, {}", m.red, m.green, m.blue);
+                m.scale_colors();
 
-                // Implement the iterator traif for color, maybe this fixes it?
-
-
-                for i in m {
-                    if i > 255.0 {
-                        i = 255.0;
-                    } else if i < 0.0 {
-                        i = 0.0
-                    }
-                }
-
-                // TODO:
-                // Code feels bad, how to fix thix?
-                // Is this a correct way of using mut?
-                // Rounding? or should integers be used?
-                if red > 255.0 {
-                    red = 255.0;
-                } else if red < 0.0 {
-                    red = 0.0;
-                }
-
-                if green > 255.0 {
-                    green = 255.0;
-                } else if green < 0.0 {
-                    green = 0.0;
-                }
-                if blue > 255.0 {
-                    blue = 255.0;
-                } else if blue < 0.0 {
-                    blue = 0.0;
-                }
-
-                normalised_rgb.push(red);
-                normalised_rgb.push(green);
-                normalised_rgb.push(blue);
-                counter += 1;
+                normalised_rgb.push(m.red);
+                normalised_rgb.push(m.green);
+                normalised_rgb.push(m.blue);
             }
         }
         
-        println!("Normal:, {:?}", normalised_rgb);
-
+        println!("Normal_rgb print:, {:?}", normalised_rgb);
         return header;        
     }
 
@@ -317,9 +301,9 @@ mod tests {
         new_canvas.write_pixel(0, 0, rood);
         new_canvas.write_pixel(2, 1, not_rood);
         new_canvas.write_pixel(4, 2, defo_not_rood);
-        println!("{:?}", new_canvas);
+        println!("newwwwwwwwwwwcanvasboi, {:?}", new_canvas);
         let pixels_boys = new_canvas.canvas_to_ppm();
-        println!("{:?}", pixels_boys);
+        println!("newwwwwppmboi, {:?}", pixels_boys);
     }
 
 }

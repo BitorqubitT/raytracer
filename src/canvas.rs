@@ -14,7 +14,7 @@ use std::vec::Vec;
 
 // Find more efficient way to check boundaries on the colors
 // Can I convert the struct to an array with a method?
-// If this a desired solution?
+// Is this a desired solution?
 
 #[derive(Debug, Copy, Clone)]
 pub struct Color {
@@ -147,9 +147,13 @@ impl Canvas{
 
                 // Can change this to pixel_at.red etc
                 let mut m = self.pixel_at(i, j);
-                //let mut red = m.red * 255.0;
+                let mut red = m.red * 255.0;
                 //let mut green = m.green * 255.0;
                 //let mut blue = m.blue * 255.0;
+                
+
+                // Implement the iterator traif for color, maybe this fixes it?
+
 
                 for i in m {
                     if i > 255.0 {

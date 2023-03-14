@@ -38,15 +38,13 @@ impl Color{
 }
 
 // TODO:
-// Is this a good solution?
+// Check solution
 impl Color{
     
     pub fn as_array(&self) -> [f64; 3] {
         [self.red, self.green, self.blue]
     }
 }
-
-
 
 impl Add for Color{
     type Output = Self;
@@ -94,8 +92,8 @@ impl Color{
 // Scale colors for ppm file
 impl Color{
     pub fn scale_colors(&mut self) {
-        // Good spot to rescale here?
         // And do we want to change the values in struct color?
+        // Could put them in a array and loop over them.
 
         self.red = self.red * 255.0;
         self.blue = self.blue * 255.0;
@@ -150,6 +148,11 @@ impl Canvas{
         y * self.width + x
     }
 
+    
+    //TODO:
+    // Add header+body
+    // Check format
+    // Download PPM reader and check
     // Function to convert the canvas to a ppm file
     // Maybe use self instead of &self?
     pub fn canvas_to_ppm(self) -> String{
@@ -157,12 +160,12 @@ impl Canvas{
                                       {} {}\n\
                                       255", self.width, self.height );
 
-        // TODO:
-        // Write new vector to ppm
-        // What if our image exceeds the 70/3 width
-        // 255 should be put in a variable or param.
-        let mut normalised_rgb = Vec::new();
-        
+
+
+        // Does this need to be a vec?
+        //let mut normalised_rgb = Vec::new();
+        let mut normalised_rgb = String::from("aaa");
+
         for j in 0..self.height {
             for i in 0..self.width {
 
@@ -170,12 +173,21 @@ impl Canvas{
                 println!("alalaal, {}, {}, {}", m.red, m.green, m.blue);
                 m.scale_colors();
 
-                normalised_rgb.push(m.red);
-                normalised_rgb.push(m.green);
-                normalised_rgb.push(m.blue);
+
+                //normalised_rgb.push(m.red);
+
+
+                // This feels scuffed
+                let mut redd = m.red.to_string();
+
+                normalised_rgb.push_str(&redd);
+
+
+                normalised_rgb.push_str(m.green);
+                normalised_rgb.push_str(m.blue);
             }
         }
-        
+
         println!("Normal_rgb print:, {:?}", normalised_rgb);
         return header;        
     }
@@ -286,9 +298,12 @@ mod tests {
                                           10 20\n\
                                           255");
         let header = new_canvas.canvas_to_ppm();
-        //println!("{:?}", test_header);
         assert!(test_header == header);
     }
+
+
+// Clean up canvas_pixel_data and longer lines?
+// Combine the test when both work?
 
     #[test]
     fn canvas_to_ppm_pixel_data() {

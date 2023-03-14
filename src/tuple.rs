@@ -26,18 +26,6 @@ impl Tuple {
     }
 }
 
-// Could add check for point and vector.
-
-//impl Tuple{
-//    pub fn point_check(&self) -> bool {
-//        self.w.fuzzy_eq(1.0)
-//   }
-
-//    pub fn vector_check(&self) -> bool {
-//        self.w.fuzzy_eq(0.0)
-//    }
-//}
-
 // should i use: Add<Self>  ?????
 impl Add for Tuple{
     type Output = Self;
@@ -262,10 +250,11 @@ mod tests {
         let vec_one = Tuple::vector(1.0, 2.0, 3.0);
         let vec_two = Tuple::vector(2.0, 3.0, 4.0);
        
-        let real_result = Tuple::vector(1.0, -2.0, 1.0);
+        let real_result = Tuple::vector(-1.0, 2.0, -1.0);
         
         let cross_computed = vec_one.cross(vec_two);
-         
+        println!("{:?}", real_result);
+        println!("{:?}", cross_computed); 
         assert!(real_result.x == cross_computed.x);
         assert!(real_result.y == cross_computed.y);
         assert!(real_result.z == cross_computed.z);

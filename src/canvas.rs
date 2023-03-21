@@ -173,18 +173,24 @@ impl Canvas{
                 println!("alalaal, {}, {}, {}", m.red, m.green, m.blue);
                 m.scale_colors();
 
+                // Vector -> Rescale -> to string
+                // Should this be mut? 
 
-                //normalised_rgb.push(m.red);
-
-
-                // This feels scuffed
                 let mut redd = m.red.to_string();
+                let mut bluee = m.blue.to_string();
+                let mut greenn = m.green.to_string();
 
+                // Might clean this up by looping over traits
                 normalised_rgb.push_str(&redd);
+                normalised_rgb.push_str(" ");
+                normalised_rgb.push_str(&greenn);
+                normalised_rgb.push_str(" ");
+                normalised_rgb.push_str(&bluee);
+                normalised_rgb.push_str(" ");
 
+                // TODO:
+                // Force newline  after max char limit 
 
-                normalised_rgb.push_str(m.green);
-                normalised_rgb.push_str(m.blue);
             }
         }
 
@@ -333,6 +339,7 @@ mod tests {
         //TODO:
         //Loop and set every pixel to rainbow color
         // convert to ppm format.
+        // check string output and assert
     }
 
 

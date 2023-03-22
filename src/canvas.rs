@@ -38,7 +38,8 @@ impl Color{
 }
 
 // TODO:
-// Check solution
+// Check if we want to use this or not?
+
 impl Color{
     
     pub fn as_array(&self) -> [f64; 3] {
@@ -176,17 +177,33 @@ impl Canvas{
                 // Vector -> Rescale -> to string
                 // Should this be mut? 
 
-                let mut redd = m.red.to_string();
-                let mut bluee = m.blue.to_string();
-                let mut greenn = m.green.to_string();
+                //let mut redd = m.red.to_string();
+                //let mut bluee = m.blue.to_string();
+                //let mut greenn = m.green.to_string();
+
+                let mut counter = 0;
+
+                for color_value in m.as_array().iter() {
+                    println!("testttt, {}", color_value);
+                    normalised_rgb.push_str(&color_value.to_string());
+                    
+                    // better to just check string length
+                    //if normalised_rgb.len() == 
+
+                    if counter % 10 = 0  {
+                        
+                        
+                    }
+
+                }
 
                 // Might clean this up by looping over traits
-                normalised_rgb.push_str(&redd);
-                normalised_rgb.push_str(" ");
-                normalised_rgb.push_str(&greenn);
-                normalised_rgb.push_str(" ");
-                normalised_rgb.push_str(&bluee);
-                normalised_rgb.push_str(" ");
+                //normalised_rgb.push_str(&redd);
+                //normalised_rgb.push_str(" ");
+                //normalised_rgb.push_str(&greenn);
+                //normalised_rgb.push_str(" ");
+                //normalised_rgb.push_str(&bluee);
+                //normalised_rgb.push_str(" ");
 
                 // TODO:
                 // Force newline  after max char limit 

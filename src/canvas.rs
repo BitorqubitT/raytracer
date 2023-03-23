@@ -152,7 +152,6 @@ impl Canvas{
     
     //TODO:
     // Add header+body
-    // Check format
     // Download PPM reader and check
     // Function to convert the canvas to a ppm file
     // Maybe use self instead of &self?
@@ -161,61 +160,48 @@ impl Canvas{
                                       {} {}\n\
                                       255", self.width, self.height );
 
-
-
-        // Does this need to be a vec?
-        //let mut normalised_rgb = Vec::new();
-        let mut normalised_rgb = String::from("aaa");
+        let mut normalised_rgb = String::from("");
 
         for j in 0..self.height {
             for i in 0..self.width {
 
                 let mut m = self.pixel_at(i, j);
-                println!("alalaal, {}, {}, {}", m.red, m.green, m.blue);
                 m.scale_colors();
 
-                // Vector -> Rescale -> to string
-                // Should this be mut? 
-
-                //let mut redd = m.red.to_string();
-                //let mut bluee = m.blue.to_string();
-                //let mut greenn = m.green.to_string();
-
-                let mut counter = 0;
-
                 for color_value in m.as_array().iter() {
-                    println!("testttt, {}", color_value);
                     normalised_rgb.push_str(&color_value.to_string());
-                    
-                    // better to just check string length
-                    //if normalised_rgb.len() == 
-
-                    if counter % 10 = 0  {
-                        
-                        
+                    normalised_rgb.push_str(" ");
                     }
-
                 }
+        
+        let mut image = String::new();
+        let mut row =  String::new();
 
-                // Might clean this up by looping over traits
-                //normalised_rgb.push_str(&redd);
-                //normalised_rgb.push_str(" ");
-                //normalised_rgb.push_str(&greenn);
-                //normalised_rgb.push_str(" ");
-                //normalised_rgb.push_str(&bluee);
-                //normalised_rgb.push_str(" ");
-
-                // TODO:
-                // Force newline  after max char limit 
-
+        // We keep writing words to row and we push the row to image when we hit 70
+        for word in normalised_rgb.split_whitespace() {
+            if row.len() + word.len() + 1 > 70 {
+                image.push_str(&row);
+                image.push_str("\n");
+                row.clear();
             }
+            row.push_str(word);
+            row.push(' ');
         }
 
-        println!("Normal_rgb print:, {:?}", normalised_rgb);
+        // We need this?
+        image.push_str(&row);
+        
+        // Some process programs need file to end with newline
+        image.push_str("\n");
+
+        println!("Final image: {}", image);
+
+        }
         return header;        
     }
-
 }
+
+
 
 #[cfg(test)]
 mod tests {
@@ -339,9 +325,7 @@ mod tests {
         new_canvas.write_pixel(0, 0, rood);
         new_canvas.write_pixel(2, 1, not_rood);
         new_canvas.write_pixel(4, 2, defo_not_rood);
-        println!("newwwwwwwwwwwcanvasboi, {:?}", new_canvas);
         let pixels_boys = new_canvas.canvas_to_ppm();
-        println!("newwwwwppmboi, {:?}", pixels_boys);
     }
 
 }
@@ -353,10 +337,16 @@ mod tests {
 
         let rainbow = Color::new(1.0, 0.8, 0.6);
 
-        //TODO:
-        //Loop and set every pixel to rainbow color
-        // convert to ppm format.
-        // check string output and assert
+
+        for j in 0..new_canvas.height {
+            for i in 0..new_canvas.width {
+                new_canvas.write_pixel(i, j, rainbow);
+            }
+        } 
+
+        new_canvas.canvas_to_ppm();
+
+        // Do some type of assert here
     }
 
 

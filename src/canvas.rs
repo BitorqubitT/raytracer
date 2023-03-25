@@ -91,6 +91,9 @@ impl Color{
 }
 
 // Scale colors for ppm file
+// TODO
+// Should always be whole numbers as floats
+// 127.5 is not possible i think. how do we deal with rounding?
 impl Color{
     pub fn scale_colors(&mut self) {
         // And do we want to change the values in struct color?
@@ -151,20 +154,22 @@ impl Canvas{
 
     
     //TODO:
-    // Add header+body
     // Download PPM reader and check
     // Function to convert the canvas to a ppm file
     // Maybe use self instead of &self?
-    pub fn canvas_to_ppm(self) -> String{
-        let header = format!("P3\n\
-                                      {} {}\n\
-                                      255", self.width, self.height );
+    // 
 
+    pub fn canvas_to_ppm(self) -> String{
+        let mut header = format!("P3\n\
+                                      {} {}\n\
+                                      255 \n", self.width, self.height );
+        println!("{:?}", header);
+        
+        // Rescale colors and add them to a string
         let mut normalised_rgb = String::from("");
 
         for j in 0..self.height {
             for i in 0..self.width {
-
                 let mut m = self.pixel_at(i, j);
                 m.scale_colors();
 
@@ -173,15 +178,14 @@ impl Canvas{
                     normalised_rgb.push_str(" ");
                     }
                 }
-        
-        let mut image = String::new();
+        println!("{}", normalised_rgb);
         let mut row =  String::new();
 
         // We keep writing words to row and we push the row to image when we hit 70
         for word in normalised_rgb.split_whitespace() {
             if row.len() + word.len() + 1 > 70 {
-                image.push_str(&row);
-                image.push_str("\n");
+                header.push_str(&row);
+                header.push_str("\n");
                 row.clear();
             }
             row.push_str(word);
@@ -189,13 +193,12 @@ impl Canvas{
         }
 
         // We need this?
-        image.push_str(&row);
+        header.push_str(&row);
         
         // Some process programs need file to end with newline
-        image.push_str("\n");
+        header.push_str("\n");
 
-        println!("Final image: {}", image);
-
+        println!("{}", header);
         }
         return header;        
     }
@@ -343,10 +346,14 @@ mod tests {
                 new_canvas.write_pixel(i, j, rainbow);
             }
         } 
-
-        new_canvas.canvas_to_ppm();
-
+        let canvas = new_canvas.canvas_to_ppm();
+        
         // Do some type of assert here
     }
 
 
+    // create a new test
+    // Canvas with projectile movement
+    // Test output
+    // write to ppm
+    // check if the file is correct 

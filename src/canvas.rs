@@ -331,7 +331,6 @@ mod tests {
         let pixels_boys = new_canvas.canvas_to_ppm();
     }
 
-}
 
 
     #[test]
@@ -350,6 +349,8 @@ mod tests {
         
         // Do some type of assert here
     }
+}
+
 
 
     // create a new test

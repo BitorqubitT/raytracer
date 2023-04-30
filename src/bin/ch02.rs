@@ -4,6 +4,10 @@ use raytracer::tuple::*;
 use raytracer::canvas::*;
 
 // Do I still need clone and copy?
+// Verify that this works
+// Write to file 
+
+
 #[derive(Debug, Copy, Clone)]
 pub struct Projectile {
     position: Tuple,

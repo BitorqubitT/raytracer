@@ -1,12 +1,14 @@
 use std::array;
 use std::ops::{Add, Sub, Mul};
 use std::vec::Vec;
+use std::fs::File;
+use std::io::Write;
 
 // TODO
-// Finish writing to ppm
-// Do I actually write to file already?
+// Find a way to easily check ppm files
+// Create output folder
 // Add /n;s
-// then continue page 20
+// then continue page 23
 
 // Can use cargo test canvas -- --nocapture
 // This shows prints
@@ -200,6 +202,12 @@ impl Canvas{
 
         println!("{}", header);
         }
+
+        // Use as_bytes() to write variable to file instead of just a string
+        // Change location
+        let mut f = File::create("foo.ppm").expect("Unable to create file");
+        f.write_all(header.as_bytes()).expect("Unable to write data");
+
         return header;        
     }
 }

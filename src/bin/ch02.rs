@@ -1,5 +1,6 @@
 
 extern crate raytracer;
+use raytracer::canvas;
 use raytracer::tuple::*;
 use raytracer::canvas::*;
 
@@ -51,6 +52,15 @@ Tuple::vector(0.0, -0.1, 0.0),
 
     let mut current = projectile;
     let mut n = 0;
+
+    // Maybe give to ppm an extra var -> file_name 
+
+    let mut new_canvas = Canvas::new(1000, 1000);
+
+
+    // capture the x,y pos of the projectile and save them in an array
+    // Then for each pos subtract canvasheight from the y and write the pos, new_color to canvas
+    // To ppm
 
     while current.position.y > 0.0 {
         println!("Position:, {:?}, Amount of ticks: {}", current, n);

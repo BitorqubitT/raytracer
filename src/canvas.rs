@@ -336,16 +336,17 @@ mod tests {
         new_canvas.write_pixel(0, 0, rood);
         new_canvas.write_pixel(2, 1, not_rood);
         new_canvas.write_pixel(4, 2, defo_not_rood);
-        let pixels_boys = new_canvas.canvas_to_ppm();
+        // Indent with _ because, it is not used anywhere.
+        let _pixels_boys = new_canvas.canvas_to_ppm();
     }
 
 
 
     #[test]
     fn canvas_to_ppm_longer_lines() {
-        let mut new_canvas = Canvas::new(10, 2);
+        let mut new_canvas = Canvas::new(100, 20);
 
-        let rainbow = Color::new(1.0, 0.8, 0.6);
+        let rainbow = Color::new(1.0, 0.0, 0.0);
 
 
         for j in 0..new_canvas.height {
@@ -353,8 +354,7 @@ mod tests {
                 new_canvas.write_pixel(i, j, rainbow);
             }
         } 
-        let canvas = new_canvas.canvas_to_ppm();
-        
+        let _canvas = new_canvas.canvas_to_ppm();
         // Do some type of assert here
     }
 }

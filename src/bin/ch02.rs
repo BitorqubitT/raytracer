@@ -1,13 +1,10 @@
-
 extern crate raytracer;
-use raytracer::canvas;
 use raytracer::tuple::*;
 use raytracer::canvas::*;
 
-// Do I still need clone and copy?
-// Verify that this works
-// Write to file 
-
+// Calculate the trajectory of a projectile.
+// Write this trajectory to a vector.
+// Then write this to ppm to view it as an image.
 
 #[derive(Debug, Copy, Clone)]
 pub struct Projectile {
@@ -44,27 +41,31 @@ Tuple::vector(0.0, -0.1, 0.0),
   Tuple::vector(-0.01, 0.0, 0.0)
     );
 
-
     // Normalize the vector * 11.25 
     // Get function from canvas
     let projectile = Projectile::new(Tuple::point(0.0, 1.0, 0.0), Tuple::vector(1.0, 1.8, 0.0));
-
-
     let mut current = projectile;
-    let mut n = 0;
 
     // Maybe give to ppm an extra var -> file_name 
-
-    let mut new_canvas = Canvas::new(1000, 1000);
-
-
-    // capture the x,y pos of the projectile and save them in an array
-    // Then for each pos subtract canvasheight from the y and write the pos, new_color to canvas
-    // To ppm
+    let mut new_canvas = Canvas::new(100, 100);
+    let rainbow = Color::new(1.0, 0.0, 0.0);
 
     while current.position.y > 0.0 {
-        println!("Position:, {:?}, Amount of ticks: {}", current, n);
         current = tick(&environment, &current);
-        n += 1;
+
+        // Tuple gives back a vector, catch these in a variable and set to usize.
+        // Converting type doesn't seem ideal, however the point to a pos in matrix.
+        // Need to use usize? Could int be used?
+        // Why shouldn't these be mut?
+        let current_x = current.position.x as usize;
+        let current_y = 99 - current.position.y as usize;
+
+        new_canvas.write_pixel(current_x, current_y, rainbow);
     }
+    let _canvas = new_canvas.canvas_to_ppm();
+
 }
+
+
+
+

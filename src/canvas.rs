@@ -14,7 +14,6 @@ use std::io::Write;
 // This shows prints
 // Why do the test not run in the right order?
 
-
 #[derive(Debug, Copy, Clone)]
 pub struct Color {
     pub red: f64,
@@ -125,19 +124,18 @@ impl Color{
     }
 }
 
-
 impl Canvas{
 // We dont need to give a canvas to these methods.
 // We just use self because we can only call these methods on canvas, which is self.
 
     pub fn new(width: usize , height: usize) -> Self { 
         // Need to change width and height to usize,why?>??????
+        // Is there not a better way to implement an matrix
         Self {width, height, pixels: vec![Color::new(0.0, 0.0, 0.0); width * height],
         }
     }
 
     pub fn pixel_at(&self, x: usize, y: usize) -> Color {
-        
         self.pixels[self.calc_pixel_index(x, y)]
     }
 
@@ -150,11 +148,11 @@ impl Canvas{
     }
     
     // Why the &self here
+    // Use this because our matrix is a vector, this calculates when to split row.
     pub fn calc_pixel_index(&self, x: usize, y: usize) -> usize {
         y * self.width + x
     }
 
-    
     //TODO:
     // Download PPM reader and check
     // Function to convert the canvas to a ppm file
@@ -180,7 +178,7 @@ impl Canvas{
                     normalised_rgb.push_str(" ");
                     }
                 }
-        println!("{}", normalised_rgb);
+        }   
         let mut row =  String::new();
 
         // We keep writing words to row and we push the row to image when we hit 70
@@ -201,7 +199,7 @@ impl Canvas{
         header.push_str("\n");
 
         println!("{}", header);
-        }
+        
 
         // Use as_bytes() to write variable to file instead of just a string
         // Change location
@@ -312,6 +310,8 @@ mod tests {
 
     #[test]
     fn canvas_to_ppm_header() {
+        // Should remove this test.
+        // canvas_to_ppm return the array, not just the header.
         let new_canvas = Canvas::new(10, 20);
 
         let test_header = format!("P3\n\
@@ -320,7 +320,6 @@ mod tests {
         let header = new_canvas.canvas_to_ppm();
         assert!(test_header == header);
     }
-
 
 // Clean up canvas_pixel_data and longer lines?
 // Combine the test when both work?
@@ -340,14 +339,11 @@ mod tests {
         let _pixels_boys = new_canvas.canvas_to_ppm();
     }
 
-
-
     #[test]
     fn canvas_to_ppm_longer_lines() {
         let mut new_canvas = Canvas::new(100, 20);
 
         let rainbow = Color::new(1.0, 0.0, 0.0);
-
 
         for j in 0..new_canvas.height {
             for i in 0..new_canvas.width {
@@ -358,11 +354,3 @@ mod tests {
         // Do some type of assert here
     }
 }
-
-
-
-    // create a new test
-    // Canvas with projectile movement
-    // Test output
-    // write to ppm
-    // check if the file is correct 

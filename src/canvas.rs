@@ -5,10 +5,9 @@ use std::fs::File;
 use std::io::Write;
 
 // TODO
-// Find a way to easily check ppm files
-// Create output folder
-// Add /n;s
-// then continue page 23
+// Continue page 25
+// Check if the "matrix" that I have is logical.
+
 
 // Can use cargo test canvas -- --nocapture
 // This shows prints
@@ -37,9 +36,6 @@ impl Color{
         Color {red, green, blue}
     }
 }
-
-// TODO:
-// Check if we want to use this or not?
 
 impl Color{
     
@@ -78,7 +74,6 @@ impl Mul<f64> for Color{
     }
 }
 
-// Math operations on colors:
 impl Color{
     // Why use & here?
     // If the body has no return
@@ -91,15 +86,9 @@ impl Color{
     }
 }
 
-// Scale colors for ppm file
-// TODO
-// Should always be whole numbers as floats
 // 127.5 is not possible i think. how do we deal with rounding?
 impl Color{
     pub fn scale_colors(&mut self) {
-        // And do we want to change the values in struct color?
-        // Could put them in a array and loop over them.
-
         self.red = self.red * 255.0;
         self.blue = self.blue * 255.0;
         self.green = self.green * 255.0;
@@ -129,7 +118,6 @@ impl Canvas{
 // We just use self because we can only call these methods on canvas, which is self.
 
     pub fn new(width: usize , height: usize) -> Self { 
-        // Need to change width and height to usize,why?>??????
         // Is there not a better way to implement an matrix
         Self {width, height, pixels: vec![Color::new(0.0, 0.0, 0.0); width * height],
         }
@@ -139,7 +127,6 @@ impl Canvas{
         self.pixels[self.calc_pixel_index(x, y)]
     }
 
-    // We dont give anything back here, we just mut color in vec.
     pub fn write_pixel(&mut self, x: usize, y: usize, color: Color) {
         // cannot borrow *self as immutable because is is also borrowed as mutable
         // Error if I put self.calc in self.pixels
@@ -152,12 +139,6 @@ impl Canvas{
     pub fn calc_pixel_index(&self, x: usize, y: usize) -> usize {
         y * self.width + x
     }
-
-    //TODO:
-    // Download PPM reader and check
-    // Function to convert the canvas to a ppm file
-    // Maybe use self instead of &self?
-    // 
 
     pub fn canvas_to_ppm(self) -> String{
         let mut header = format!("P3\n\
@@ -192,15 +173,12 @@ impl Canvas{
             row.push(' ');
         }
 
-        // We need this?
         header.push_str(&row);
         
         // Some process programs need file to end with newline
         header.push_str("\n");
 
         println!("{}", header);
-        
-
         // Use as_bytes() to write variable to file instead of just a string
         // Change location
         let mut f = File::create("foo.ppm").expect("Unable to create file");

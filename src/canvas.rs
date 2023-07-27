@@ -30,6 +30,8 @@ pub struct Canvas {
     pixels: Vec<Color>,
 }
 
+// clean up add impl together for the same struct 
+
 impl Color{
 
     pub fn new(red: f64, green: f64, blue: f64) -> Self{

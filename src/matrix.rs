@@ -1,4 +1,4 @@
-use std::ops::{Index, IndexMut};
+use std::ops::{Index, IndexMut, Range};
 use std::cmp::Eq;
 
 
@@ -56,7 +56,23 @@ impl IndexMut<usize> for Matrix {
 
 impl Eq for Matrix {
 
-    fn Eq(self, Eq: bool) -> 
+    type Output = bool;
+
+    fn eq(self, other: Matrix){
+        // how do we loop over matrix
+        // is  the matrix nD or is it one big array.
+        // I think second
+
+        let mut matrix_equality = true;
+
+        for row in 0..self.width{
+            for height in 0..self.height{
+                if self[row][height] != other[row][height]{
+                    matrix_equality = false;
+                }
+            }
+        }
+    }
 
 
 }

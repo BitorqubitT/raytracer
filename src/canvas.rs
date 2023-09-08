@@ -7,11 +7,13 @@ use std::io::Write;
 // TODO
 // Continue page 25
 // Check if the "matrix" that I have is logical.
-
-
 // Can use cargo test canvas -- --nocapture
 // This shows prints
-// Why do the test not run in the right order?
+
+// Questions:
+// Think about stack vs heap and thus the use of &.
+// Am I using & in the right way.
+// Check this
 
 #[derive(Debug, Copy, Clone)]
 pub struct Color {
@@ -56,6 +58,7 @@ impl Add for Color{
     }
 }
 
+//Should I define type aswell Sub<f64> ?
 impl Sub for Color{
     type Output = Self;
     

@@ -81,6 +81,8 @@ impl Mul<f64> for Color{
 
 impl Color{
     // Why use & here?
+    // Is & used to put it on stack
+    // Also why use pub?
     // If the body has no return
     // It returns whatever is in the ()
     pub fn hadamard_product(&self, other: Color) -> Color{

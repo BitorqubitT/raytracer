@@ -1,20 +1,14 @@
-use std::ops::{Index, IndexMut, Range};
-use std::cmp::Eq;
-
+use std::ops::{Index, IndexMut, Mul, Range};
+use std::cmp::PartialEq;
 
 #[macro_use]
 
 // Questions:
 // Functions need to be public to use them in ch03, but is this the only reason
-// SHould I use i32?
-// Any other way to do this?
-// Seems pretty clean, but maybe i got more options
-// Easy way to create, n*m 0 matrix maybe?
 // Implement Eq for comparing matrices -> what is the difference: ops, cmp
+// Implementing matrix comparison can be done by using partialEq -> how does this really work?
 
-
-
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Matrix {
     pub width: usize,
     pub height: usize,
@@ -54,29 +48,37 @@ impl IndexMut<usize> for Matrix {
     }
 }
 
-impl Eq for Matrix {
+impl Mul for Matrix {
 
-    type Output = bool;
+    fn mul(self, other: Matrix) -> Matrix {
 
-    fn eq(self, other: Matrix){
-        // how do we loop over matrix
-        // is  the matrix nD or is it one big array.
-        // I think second
-
-        let mut matrix_equality = true;
-
-        for row in 0..self.width{
-            for height in 0..self.height{
-                if self[row][height] != other[row][height]{
-                    matrix_equality = false;
-                }
-            }
+        // Check if matrix dimensins allow multiplication.
+        // Is this the right way of handling errors?
+        if self.width != other.height {
+            panic!("Matrices can't be multiplied, wrong dimensions.");
         }
+
+        // Where do we store the results
+        // Create a zerro matrix first and then change the values?
+        // Store values in array then create matrix.
+        let mut result = Matrix::new();
+
+        for i in 0..self.width {
+            for j in 0..self.height {
+                
+
+
+                
+            }
+
+
+
+        }
+
+
+
     }
-
-
 }
-
 
 
 #[cfg(test)]
@@ -114,7 +116,7 @@ mod tests {
         assert!(new_matrix[2][2] == 1);
     }
 
-
+    #[test]
     // Should make it work 100%, does this mean with floating points aswell?
     fn compare_matrices(){
 
@@ -132,20 +134,60 @@ mod tests {
 
         let matrix_one = Matrix::new(3, 3, matrix_values);
         let matrix_two = Matrix::new(3, 3, matrix_values_2);
-        let matrix_three = Matrix::new(3, 3, matrix_values);
 
-        assert!(matrix_one != matrix_one);
-        assert!((matrix_one == matrix_three));
-
+        assert!(matrix_one == matrix_one);
+        assert!(matrix_one != matrix_two);
+    
     }
 
-
+    #[test]
     // should look at how i implemented multiplication for canvas
     fn multiply_matrices(){
 
+        let matrix_values_a = vec![
+            vec![1, 2, 3, 4],
+            vec![5, 6, 7, 8],
+            vec![9, 8, 7, 6],
+            vec![5, 4, 3, 2]
+        ];
+
+        let matrix_values_b = vec![
+            vec![-2, 1, 2, 3],
+            vec![3, 2, 1, -1],
+            vec![4, 3, 6, 5],
+            vec![1, 2, 7, 8]
+        ];
+
+        let matrix_values_c = vec![
+            vec![20, 22, 50, 48],
+            vec![44, 54, 114, 108],
+            vec![40, 58, 110, 102],
+            vec![16, 26, 46, 42]
+        ];
+
+        let matrix_a = Matrix::new(4, 4, matrix_values_a);
+        let matrix_b = Matrix::new(4, 4, matrix_values_b);
+        let matrix_c = Matrix::new(4, 4, matrix_values_c);
+
+        assert!(matrix_a * matrix_b == matrix_c);
+    }
+
+
+    #[test]
+    fn multiply_matrix_by_tuple(){
+
+        let matrix_values_a = vec![
+            vec![1, 2, 3, 4],
+            vec![2, 4, 4, 2],
+            vec![8, 6, 4, 1],
+            vec![0, 0, 0, 1]
+        ];
+
+
 
 
     }
+
 
 
 }

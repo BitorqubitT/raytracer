@@ -50,12 +50,13 @@ impl IndexMut<usize> for Matrix {
 
 impl Mul for Matrix {
 
+    // should replace matrix by selF?
     fn mul(self, other: Matrix) -> Matrix {
 
         // Check if matrix dimensins allow multiplication.
         // Is this the right way of handling errors?
         if self.width != other.height {
-            panic!("Matrices can't be multiplied, wrong dimensions.");
+            panic!("Matrix dimnesions are not compatible.");
         }
 
         // Where do we store the results
@@ -63,16 +64,20 @@ impl Mul for Matrix {
         // Store values in array then create matrix.
         let mut result = Matrix::new();
 
+        // check code below
         for i in 0..self.width {
             for j in 0..self.height {
-                
+               let mut sum = 0.0;
+               // Matrix multiplication, cant this be a seperate function?
+               for k in 0..self.height {
+                    sum += self.data[i * self.height + k] + other.data[k * other.height j];
+               }
+               result.data[i * other.height + j] = sum;
 
-
+            // return result
+            result
                 
             }
-
-
-
         }
 
 

@@ -8,6 +8,12 @@ use std::cmp::PartialEq;
 // Implement Eq for comparing matrices -> what is the difference: ops, cmp
 // Implementing matrix comparison can be done by using partialEq -> how does this really work?
 
+
+// TODO:
+// With my current implementation of matrix I have to supply data
+// Cant i do this later?
+// Solution (initiate with 0 matrix based on w*h?, or a vec that grows
+
 #[derive(Debug, Clone, PartialEq)]
 pub struct Matrix {
     pub width: usize,
@@ -51,36 +57,39 @@ impl IndexMut<usize> for Matrix {
 impl Mul for Matrix {
 
     // should replace matrix by selF?
-    fn mul(self, other: Matrix) -> Matrix {
+    fn mul(self, other: Matrix) -> Self {
 
         // Check if matrix dimensins allow multiplication.
         // Is this the right way of handling errors?
         if self.width != other.height {
             panic!("Matrix dimnesions are not compatible.");
         }
+        
+        // For now we create a matrix to make the impl work.
+        // Should find better solution see TDDO
+        let matrix_values: Vec<Vec<i32>> = vec![vec![0; self.width]; other.height];
 
         // Where do we store the results
         // Create a zerro matrix first and then change the values?
         // Store values in array then create matrix.
-        let mut result = Matrix::new();
+        let mut result = Matrix::new(self.width, other.height, matrix_values);
 
         // check code below
         for i in 0..self.width {
             for j in 0..self.height {
-               let mut sum = 0.0;
+                let mut sum = 0.0;
                // Matrix multiplication, cant this be a seperate function?
-               for k in 0..self.height {
-                    sum += self.data[i * self.height + k] + other.data[k * other.height j];
-               }
-               result.data[i * other.height + j] = sum;
+                for k in 0..self.height {
+                    // Do we have a way to sum vectors?
+                    // Otherwise first simply take the sum of both and then add them.
+                    sum += self.data[i * self.height + k] + other.data[k * other.height + j];
+                }
+                result.data[i * other.height + j] = sum;
 
-            // return result
-            result
-                
             }
         }
-
-
+        return result
+        //result
 
     }
 }

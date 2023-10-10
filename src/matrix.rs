@@ -13,6 +13,7 @@ use std::cmp::PartialEq;
 // With my current implementation of matrix I have to supply data
 // Cant i do this later?
 // Solution (initiate with 0 matrix based on w*h?, or a vec that grows
+// Doubts about matrix implementation.
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Matrix {
@@ -56,6 +57,8 @@ impl IndexMut<usize> for Matrix {
 
 impl Mul for Matrix {
 
+    type Output = Self;
+
     // should replace matrix by selF?
     fn mul(self, other: Matrix) -> Self {
 
@@ -80,11 +83,17 @@ impl Mul for Matrix {
                 let mut sum = 0.0;
                // Matrix multiplication, cant this be a seperate function?
                 for k in 0..self.height {
-                    // Do we have a way to sum vectors?
-                    // Otherwise first simply take the sum of both and then add them.
-                    sum += self.data[i * self.height + k] + other.data[k * other.height + j];
+                    // Take the dot product
+                    // Is there a way to use code from tuple?
+                    // Right column == right row (fix this)
+                    // Any other way then looping over the rows and creating a new vec?
+                    // Something with more speed? 
+
+                    println!("This is left row, {:?}", self.data[i *self.height + k]);
+                    println!("This is right column, {:?}", other.data[k * other.height + j]);
+                    //sum += self.data[i * self.height + k] + other.data[k * other.height + j];
                 }
-                result.data[i * other.height + j] = sum;
+                //result.data[i * other.height + j] = sum;
 
             }
         }

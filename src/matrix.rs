@@ -8,7 +8,6 @@ use std::cmp::PartialEq;
 // Implement Eq for comparing matrices -> what is the difference: ops, cmp
 // Implementing matrix comparison can be done by using partialEq -> how does this really work?
 
-
 // TODO:
 // With my current implementation of matrix I have to supply data
 // Cant i do this later?
@@ -96,7 +95,7 @@ impl Mul for Matrix {
             }
         }
         return result
-        //result
+        //maybe use result
 
     }
 }

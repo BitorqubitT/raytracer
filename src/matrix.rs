@@ -1,7 +1,8 @@
-use std::ops::{Index, IndexMut, Mul, Range};
+use std::ops::{Index, IndexMut, Mul};
 use std::cmp::PartialEq;
+crate::tuple::Tuple::{Mul}; 
 
-#[macro_use]
+
 
 // Questions:
 // Functions need to be public to use them in ch03, but is this the only reason
@@ -10,9 +11,10 @@ use std::cmp::PartialEq;
 
 // TODO:
 // With my current implementation of matrix I have to supply data
-// Cant i do this later?
-// Solution (initiate with 0 matrix based on w*h?, or a vec that grows
-// Doubts about matrix implementation.
+// Can also put the values in vec<vec>> and the convert to matrix
+// Check types, might need to change 
+// Matrix mul speed?
+
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Matrix {
@@ -24,6 +26,7 @@ pub struct Matrix {
 // Looks like its better to create matrices from native types
 impl Matrix {
 
+    // f64 instead of i32???
     pub fn new(width: usize, height: usize, data: Vec<Vec<i32>>) -> Self {
         Self {
             width,
@@ -58,7 +61,6 @@ impl Mul for Matrix {
 
     type Output = Self;
 
-    // should replace matrix by selF?
     fn mul(self, other: Matrix) -> Self {
 
         // Check if matrix dimensins allow multiplication.
@@ -69,34 +71,26 @@ impl Mul for Matrix {
         
         // For now we create a matrix to make the impl work.
         // Should find better solution see TDDO
-        // Create a zerro matrix first and then change the values?
         let matrix_values: Vec<Vec<i32>> = vec![vec![0; self.width]; other.height];
         let mut result = Matrix::new(self.width, other.height, matrix_values);
 
         for i in 0..self.height {
             for j in 0..self.width {
-                let mut sum = 0.0;
+                
+                // Type is i32 for now, don't we need flt64 for matrix?
+                let mut sum= 0;
                // Matrix multiplication, cant this be a seperate function?
                 for k in 0..self.height {
-                    // Is there a way to use code from tuple?
+
                     // Something with more speed? 
-                    // Maybe just taking dot product? 
-                    // how do I acces a whole row at once (should be possible)
-                    
-                    // right order? 
                     sum += self.data[i][k] * other.data[k][j];
-
-                    println!("This is left row, {:?}", self.data[i *self.height + k]);
-                    println!("This is right column, {:?}", other.data[k * other.height + j]);
-                    //sum += self.data[i * self.height + k] + other.data[k * other.height + j];
                 }
-                //result.data[i * other.height + j] = sum;
-
+                // y, x
+                result.data[i][j] = sum;
             }
         }
-        return result
-        //maybe use result
-
+    // dont need the return, whats the diff?
+       return result
     }
 }
 
@@ -204,6 +198,7 @@ mod tests {
         ];
 
 
+        let mut tuple_a = Tuple::new(2.0, 3.0, -1.0, 6.0);
 
 
     }

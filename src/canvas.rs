@@ -1,4 +1,3 @@
-use std::array;
 use std::ops::{Add, Sub, Mul};
 use std::vec::Vec;
 use std::fs::File;

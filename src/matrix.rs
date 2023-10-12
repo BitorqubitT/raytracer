@@ -10,6 +10,8 @@ crate::tuple::Tuple::{Mul};
 // Implementing matrix comparison can be done by using partialEq -> how does this really work?
 
 // TODO:
+// Test M mul for different dimensions
+// Implement M * tuple. use my own struct. How to creae impl for m * tuple
 // With my current implementation of matrix I have to supply data
 // Can also put the values in vec<vec>> and the convert to matrix
 // Check types, might need to change 

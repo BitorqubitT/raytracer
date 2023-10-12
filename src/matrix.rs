@@ -70,24 +70,22 @@ impl Mul for Matrix {
         
         // For now we create a matrix to make the impl work.
         // Should find better solution see TDDO
-        let matrix_values: Vec<Vec<i32>> = vec![vec![0; self.width]; other.height];
-
-        // Where do we store the results
         // Create a zerro matrix first and then change the values?
-        // Store values in array then create matrix.
+        let matrix_values: Vec<Vec<i32>> = vec![vec![0; self.width]; other.height];
         let mut result = Matrix::new(self.width, other.height, matrix_values);
 
-        // check code below
-        for i in 0..self.width {
-            for j in 0..self.height {
+        for i in 0..self.height {
+            for j in 0..self.width {
                 let mut sum = 0.0;
                // Matrix multiplication, cant this be a seperate function?
                 for k in 0..self.height {
-                    // Take the dot product
                     // Is there a way to use code from tuple?
-                    // Right column == right row (fix this)
-                    // Any other way then looping over the rows and creating a new vec?
                     // Something with more speed? 
+                    // Maybe just taking dot product? 
+                    // how do I acces a whole row at once (should be possible)
+                    
+                    // right order? 
+                    sum += self.data[i][k] * other.data[k][j];
 
                     println!("This is left row, {:?}", self.data[i *self.height + k]);
                     println!("This is right column, {:?}", other.data[k * other.height + j]);

@@ -1,8 +1,8 @@
 use std::ops::{Index, IndexMut, Mul};
 use std::cmp::PartialEq;
+
+use crate::tuple::Tuple;
 crate::tuple::Tuple::{Mul}; 
-
-
 
 // Questions:
 // Functions need to be public to use them in ch03, but is this the only reason
@@ -94,6 +94,24 @@ impl Mul for Matrix {
     // dont need the return, whats the diff?
        return result
     }
+
+    // No idea what to do here.
+    // Can use tuple or just 1d matrix.
+    // What is the play here.
+    // Can we mul m by tuple
+    // Should I use the tuple struct?
+    // whats a logical implementation?
+
+    fn mul(self, other: Tuple) -> Self {
+
+
+
+
+
+    }
+
+
+
 }
 
 
@@ -153,7 +171,6 @@ mod tests {
 
         assert!(matrix_one == matrix_one);
         assert!(matrix_one != matrix_two);
-    
     }
 
     #[test]

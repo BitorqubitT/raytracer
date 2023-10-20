@@ -2,7 +2,6 @@ use std::ops::{Index, IndexMut, Mul};
 use std::cmp::PartialEq;
 
 use crate::tuple::Tuple;
-crate::tuple::Tuple::{Mul}; 
 
 // Questions:
 // Functions need to be public to use them in ch03, but is this the only reason
@@ -10,11 +9,9 @@ crate::tuple::Tuple::{Mul};
 // Implementing matrix comparison can be done by using partialEq -> how does this really work?
 
 // TODO:
-// Test M mul for different dimensions
+// M mul doesnt always work, fix this
 // Implement M * tuple. use my own struct. How to creae impl for m * tuple
-// With my current implementation of matrix I have to supply data
 // Can also put the values in vec<vec>> and the convert to matrix
-// Check types, might need to change 
 // Matrix mul speed?
 
 
@@ -101,14 +98,18 @@ impl Mul for Matrix {
     // Can we mul m by tuple
     // Should I use the tuple struct?
     // whats a logical implementation?
+   
+   
+   
+   
+   
+   
+   
+   // fn mul(self, other: Tuple) -> Self {
 
-    fn mul(self, other: Tuple) -> Self {
 
 
-
-
-
-    }
+    //}
 
 
 
@@ -174,8 +175,62 @@ mod tests {
     }
 
     #[test]
+    fn compare_matrices_2by2(){
+
+        let matrix_values_a = vec![
+            vec![2, 5],
+            vec![9, 51],
+        ];
+
+        let matrix_values_b = vec![
+            vec![6, 3],
+            vec![1, 81],
+        ];
+
+        let matrix_values_c = vec![
+            vec![17, 411],
+            vec![105, 4158],
+        ];
+
+        let matrix_a = Matrix::new(2, 2, matrix_values_a);
+        let matrix_b = Matrix::new(2, 2, matrix_values_b);
+        let matrix_c = Matrix::new(2, 2, matrix_values_c);
+
+        assert!(matrix_a * matrix_b == matrix_c);
+    }
+
+    #[test]
+    fn compare_matrices_3_2_by_2_3(){
+
+        let matrix_values_a = vec![
+            vec![2, 0],
+            vec![1, 11],
+            vec![955, 51],
+        ];
+
+        let matrix_values_b = vec![
+            vec![6, 3, 1],
+            vec![1, 81, 9],
+        ];
+
+        let matrix_values_c = vec![
+            vec![12, 6, 2],
+            vec![17, 894, 100],
+            vec![5781, 6996, 1414],
+        ];
+
+        // check what is the correct input
+        // maybe add a check
+        let matrix_a = Matrix::new(2, 3, matrix_values_a);
+        let matrix_b = Matrix::new(3, 2, matrix_values_b);
+        let matrix_c = Matrix::new(3, 3, matrix_values_c);
+
+        assert!(matrix_a * matrix_b == matrix_c);
+    }
+
+    #[test]
     // should look at how i implemented multiplication for canvas
-    fn multiply_matrices(){
+    fn multiply_matrices_4by4(){
 
         let matrix_values_a = vec![
             vec![1, 2, 3, 4],
@@ -201,6 +256,44 @@ mod tests {
         let matrix_a = Matrix::new(4, 4, matrix_values_a);
         let matrix_b = Matrix::new(4, 4, matrix_values_b);
         let matrix_c = Matrix::new(4, 4, matrix_values_c);
+
+        assert!(matrix_a * matrix_b == matrix_c);
+    }
+
+    #[test]
+    fn multiply_matrices_6by6(){
+
+        let matrix_values_a = vec![
+            vec![1, 2, 3, 4, 9, 1],
+            vec![5, 6, 7, 8, 1, 2],
+            vec![9, 8, 7, 6, 3, 5],
+            vec![5, 4, 3, 2, 6, 7],
+            vec![1, 82, 7, 1, 3, 5],
+            vec![9, 8, 7, 5, 3, 5],
+        ];
+
+        let matrix_values_b = vec![
+            vec![-2, 1, 2, 3, 9, 1],
+            vec![3, 2, 1, -1, 44, 2],
+            vec![4, 3, 6, 5, 15, 1],
+            vec![1, 2, 1, 8, 1, 4],
+            vec![1, 1, 6, 82, 45, 4],
+            vec![13, 6, 7, 1, 5, 4],
+            ];
+
+        let matrix_values_c = vec![
+            vec![42, 37, 87, 787, 556, 64],
+            vec![71, 67, 86, 192, 477, 68],
+            vec![108, 91, 127, 353, 704, 88],
+            vec![113, 74, 119, 541, 573, 76],
+            vec![341, 221, 180, 215, 3883, 208],
+            vec![107, 80, 126, 345, 703, 84],
+        ];
+
+
+        let matrix_a = Matrix::new(6, 6, matrix_values_a);
+        let matrix_b = Matrix::new(6, 6, matrix_values_b);
+        let matrix_c = Matrix::new(6, 6, matrix_values_c);
 
         assert!(matrix_a * matrix_b == matrix_c);
     }

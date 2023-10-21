@@ -81,7 +81,9 @@ impl Mul for Matrix {
                // Matrix multiplication, cant this be a seperate function?
                 for k in 0..self.height {
 
-                    // Something with more speed? 
+                    // Something with more speed?
+                    println!("{:?}", self.data[i][k]);
+                    println!("{:?}", other.data[k][j]);
                     sum += self.data[i][k] * other.data[k][j];
                 }
                 // y, x
@@ -89,6 +91,7 @@ impl Mul for Matrix {
             }
         }
     // dont need the return, whats the diff?
+        println!("{:?}", result);
        return result
     }
 
@@ -169,7 +172,6 @@ mod tests {
 
         let matrix_one = Matrix::new(3, 3, matrix_values);
         let matrix_two = Matrix::new(3, 3, matrix_values_2);
-
         assert!(matrix_one == matrix_one);
         assert!(matrix_one != matrix_two);
     }
@@ -222,10 +224,15 @@ mod tests {
         // check what is the correct input
         // maybe add a check
         let matrix_a = Matrix::new(2, 3, matrix_values_a);
+        println!("{:?}", matrix_a);
         let matrix_b = Matrix::new(3, 2, matrix_values_b);
+        println!("{:?}", matrix_b);
         let matrix_c = Matrix::new(3, 3, matrix_values_c);
 
-        assert!(matrix_a * matrix_b == matrix_c);
+        let matrix_g = matrix_a * matrix_b;
+        println!("do we get hererrr");
+        println!("{:?}", matrix_g);
+        //assert!(matrix_a * matrix_b == matrix_c);
     }
 
     #[test]

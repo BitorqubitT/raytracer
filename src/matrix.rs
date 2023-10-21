@@ -9,11 +9,10 @@ use crate::tuple::Tuple;
 // Implementing matrix comparison can be done by using partialEq -> how does this really work?
 
 // TODO:
-// M mul doesnt always work, fix this
-// Implement M * tuple. use my own struct. How to creae impl for m * tuple
-// Can also put the values in vec<vec>> and the convert to matrix
+// Implement M * tuple
+// Use my own struct. How to create impl for m * tuple
+// INT vs FLT, how 
 // Matrix mul speed?
-
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Matrix {
@@ -61,37 +60,26 @@ impl Mul for Matrix {
     type Output = Self;
 
     fn mul(self, other: Matrix) -> Self {
-
-        // Check if matrix dimensins allow multiplication.
-        // Is this the right way of handling errors?
         if self.width != other.height {
-            panic!("Matrix dimnesions are not compatible.");
+            panic!("Matrix dimensions are not compatible.");
         }
         
         // For now we create a matrix to make the impl work.
-        // Should find better solution see TDDO
-        let matrix_values: Vec<Vec<i32>> = vec![vec![0; self.width]; other.height];
-        let mut result = Matrix::new(self.width, other.height, matrix_values);
+        let matrix_values: Vec<Vec<i32>> = vec![vec![0; other.width]; self.height];
+        let mut result = Matrix::new(other.width, self.height, matrix_values);
 
         for i in 0..self.height {
-            for j in 0..self.width {
+            for j in 0..other.width {
                 
                 // Type is i32 for now, don't we need flt64 for matrix?
                 let mut sum= 0;
-               // Matrix multiplication, cant this be a seperate function?
-                for k in 0..self.height {
-
-                    // Something with more speed?
-                    println!("{:?}", self.data[i][k]);
-                    println!("{:?}", other.data[k][j]);
+                for k in 0..self.width {
                     sum += self.data[i][k] * other.data[k][j];
                 }
-                // y, x
                 result.data[i][j] = sum;
             }
         }
     // dont need the return, whats the diff?
-        println!("{:?}", result);
        return result
     }
 
@@ -101,12 +89,6 @@ impl Mul for Matrix {
     // Can we mul m by tuple
     // Should I use the tuple struct?
     // whats a logical implementation?
-   
-   
-   
-   
-   
-   
    
    // fn mul(self, other: Tuple) -> Self {
 
@@ -152,6 +134,7 @@ mod tests {
         assert!(new_matrix[0][0] == -3);
         assert!(new_matrix[1][1] == -2);
         assert!(new_matrix[2][2] == 1);
+        assert!(new_matrix[0][1] == 5);
     }
 
     #[test]
@@ -177,7 +160,7 @@ mod tests {
     }
 
     #[test]
-    fn compare_matrices_2by2(){
+    fn multiply_matrices_2by2(){
 
         let matrix_values_a = vec![
             vec![2, 5],
@@ -202,7 +185,7 @@ mod tests {
     }
 
     #[test]
-    fn compare_matrices_3_2_by_2_3(){
+    fn multiply_matrices_3_2_by_2_3(){
 
         let matrix_values_a = vec![
             vec![2, 0],
@@ -224,15 +207,10 @@ mod tests {
         // check what is the correct input
         // maybe add a check
         let matrix_a = Matrix::new(2, 3, matrix_values_a);
-        println!("{:?}", matrix_a);
         let matrix_b = Matrix::new(3, 2, matrix_values_b);
-        println!("{:?}", matrix_b);
         let matrix_c = Matrix::new(3, 3, matrix_values_c);
 
-        let matrix_g = matrix_a * matrix_b;
-        println!("do we get hererrr");
-        println!("{:?}", matrix_g);
-        //assert!(matrix_a * matrix_b == matrix_c);
+        assert!(matrix_a * matrix_b == matrix_c);
     }
 
     #[test]
@@ -294,7 +272,7 @@ mod tests {
             vec![108, 91, 127, 353, 704, 88],
             vec![113, 74, 119, 541, 573, 76],
             vec![341, 221, 180, 215, 3883, 208],
-            vec![107, 80, 126, 345, 703, 84],
+            vec![107, 89, 126, 345, 703, 84],
         ];
 
 
@@ -316,9 +294,11 @@ mod tests {
             vec![0, 0, 0, 1]
         ];
 
-
         let mut tuple_a = Tuple::new(2.0, 3.0, -1.0, 6.0);
+        let matrix_a = Matrix::new(4, 4, matrix_values_a);
+        let tuple_b = Tuple::new(29.0, 24.0, 36.0, 6.0);
 
+        assert!(matrix_a * tuple_a == tuple_b);
 
     }
 

@@ -15,11 +15,14 @@ use crate::tuple::Tuple;
 // Change:
 // make everything float
 // M * Tuple = tuple  (how do i deal with different sizes?)
-
-
+// Check when to use &, without you consume the variable.
+// When should functions be pub?
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Matrix {
+    // CHange this
+    // width and height should just check the data
+    // Is this possible?
     pub width: usize,
     pub height: usize,
     pub data: Vec<Vec<f64>>,
@@ -86,20 +89,39 @@ impl Mul for Matrix {
     // dont need the return, whats the diff?
        return result
     }
+}
 
-    // whats a logical implementation?
-    fn mul(self, other: Tuple) -> other {
-            
+impl Mul<Tuple> for Matrix {
+    type Output =  Tuple;
+    // For now we go with M * T -> T
+    // And I use my own tuple impl
+    // Might have to change this later.
+    // This impl only works for 4,4 * 1,4
+    fn mul(self, other: Tuple) -> Tuple {
 
+        let mut new_tuple = Tuple::new(0.0, 0.0, 0.0, 0.0);
 
+        for i in 0..self.height {
+            let mut sum = 0.0;
+            for j in 0..self.width {
 
+                match j {
+                0 => sum += self.data[i][j] * other.x,
+                1 => sum += self.data[i][j] * other.y,
+                2 => sum += self.data[i][j] * other.z,
+                3 => sum += self.data[i][j] * other.w,
+                }
 
-
-
+            match j {
+            0 => new_tuple.x = sum,
+            1 => new_tuple.y = sum,
+            2 => new_tuple.z = sum,
+            3 => new_tuple.w = sum,
+            }
+            }
+        }
+    return new_tuple
     }
-
-
-
 }
 
 
@@ -299,7 +321,7 @@ mod tests {
         let mut tuple_a = Tuple::new(2.0, 3.0, -1.0, 6.0);
         let matrix_a = Matrix::new(4, 4, matrix_values_a);
         let tuple_b = Tuple::new(29.0, 24.0, 36.0, 6.0);
-
+        // implement eq check
         assert!(matrix_a * tuple_a == tuple_b);
 
     }

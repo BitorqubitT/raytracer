@@ -3,7 +3,7 @@ use std::ops::{Add, Div, Mul, Neg, Sub};
 //use crate::fuzzy_eq::*;
 //Maybe PartialeEq
 // could make pub x:
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Tuple {
    pub x: f64,
    pub y: f64,

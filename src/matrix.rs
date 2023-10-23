@@ -5,18 +5,18 @@ use crate::tuple::Tuple;
 
 // Questions:
 // Functions need to be public to use them in ch03, but is this the only reason
+// I already have a lib which makes "script public" or just the implementation?
 // Implement Eq for comparing matrices -> what is the difference: ops, cmp
-// Implementing matrix comparison can be done by using partialEq -> how does this really work?
 
 // TODO:
 // Use my own struct. How to create impl for m * tuple
 // Matrix mul speed?
+// WHy cant I use the trait COPY in matrix?
 
 // Change:
-// make everything float
-// M * Tuple = tuple  (how do i deal with different sizes?)
 // Check when to use &, without you consume the variable.
-// When should functions be pub?
+// When should functions be pub in rust?
+// M * T, works, but is this the right implementation for this raytracer, what if we use diff sizes?
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Matrix {
@@ -45,6 +45,12 @@ impl Matrix {
             println!("{:?}", row);
         }
    } 
+
+   pub fn transpose() -> Self::Output {
+        
+
+
+   }
 
 }
 
@@ -110,13 +116,15 @@ impl Mul<Tuple> for Matrix {
                 1 => sum += self.data[i][j] * other.y,
                 2 => sum += self.data[i][j] * other.z,
                 3 => sum += self.data[i][j] * other.w,
+                _ => panic!("Matrix dimensions are not compatible")
                 }
 
-            match j {
+            match i {
             0 => new_tuple.x = sum,
             1 => new_tuple.y = sum,
             2 => new_tuple.z = sum,
             3 => new_tuple.w = sum,
+            _ => panic!("Matrix dimensions are not compatible")
             }
             }
         }
@@ -127,6 +135,8 @@ impl Mul<Tuple> for Matrix {
 
 #[cfg(test)]
 mod tests {
+    use crate::tuple;
+
     use super::*;
 
     #[test]
@@ -309,8 +319,9 @@ mod tests {
 
 
     #[test]
+    // Test works, check if this is still the right implementation in the future
     fn multiply_matrix_by_tuple(){
-
+       
         let matrix_values_a = vec![
             vec![1.0, 2.0, 3.0, 4.0],
             vec![2.0, 4.0, 4.0, 2.0],
@@ -318,13 +329,102 @@ mod tests {
             vec![0.0, 0.0, 0.0, 1.0],
         ];
 
-        let mut tuple_a = Tuple::new(2.0, 3.0, -1.0, 6.0);
+        let tuple_a = Tuple::new(2.0, 3.0, -1.0, 6.0);
         let matrix_a = Matrix::new(4, 4, matrix_values_a);
         let tuple_b = Tuple::new(29.0, 24.0, 36.0, 6.0);
-        // implement eq check
         assert!(matrix_a * tuple_a == tuple_b);
-
     }
+
+    #[test]
+    // Should find a way to clone or copy matrix_values_a or matrix_a
+    // We dont consume the struct so should be fine
+    fn multiply_matrix_by_identitymatrix(){
+
+        let matrix_values_a = vec![
+            vec![0.0, 1.0, 2.0, 4.0],
+            vec![1.0, 2.0, 4.0, 8.0],
+            vec![2.0, 4.0, 8.0, 16.0],
+            vec![4.0, 8.0, 16.0, 32.0],
+        ];
+
+        let matrix_values_b = vec![
+            vec![0.0, 1.0, 2.0, 4.0],
+            vec![1.0, 2.0, 4.0, 8.0],
+            vec![2.0, 4.0, 8.0, 16.0],
+            vec![4.0, 8.0, 16.0, 32.0],
+        ];
+
+        let matrix_values_i = vec![
+            vec![1.0, 0.0, 0.0, 0.0],
+            vec![0.0, 1.0, 0.0, 0.0],
+            vec![0.0, 0.0, 1.0, 0.0],
+            vec![0.0, 0.0, 0.0, 1.0],
+        ];
+
+        let matrix_a = Matrix::new(4, 4, matrix_values_a);
+        let matrix_b = Matrix::new(4, 4, matrix_values_b);
+        let matrix_i = Matrix::new(4, 4, matrix_values_i);
+
+        assert!(matrix_i * matrix_a == matrix_b)
+    }
+
+    #[test]
+    fn multiply_identitymatrix_by_tuple(){
+
+        let matrix_values_i = vec![
+            vec![1.0, 0.0, 0.0, 0.0],
+            vec![0.0, 1.0, 0.0, 0.0],
+            vec![0.0, 0.0, 1.0, 0.0],
+            vec![0.0, 0.0, 0.0, 1.0],
+        ];
+
+        let tuple_a = Tuple::new(1.0, 2.0, 3.0, 4.0);
+        let tuple_b = Tuple::new(1.0, 2.0, 3.0, 4.0);
+        let matrix_i = Matrix::new(4, 4, matrix_values_i);
+
+        assert!(matrix_i * tuple_a == tuple_b);
+    }
+
+    fn transpose_matrix(){
+
+        let matrix_values_a = vec![
+            vec![0.0, 9.0, 3.0, 0.0],
+            vec![9.0, 8.0, 0.0, 8.0],
+            vec![1.0, 8.0, 5.0, 3.0],
+            vec![0.0, 0.0, 5.0, 8.0],
+        ];
+
+        let matrix_values_b = vec![
+            vec![0.0, 9.0, 1.0, 0.0],
+            vec![9.0, 8.0, 8.0, 0.0],
+            vec![3.0, 0.0, 5.0, 5.0],
+            vec![0.0, 8.0, 3.0, 8.0],
+        ];
+
+        let matrix_a = Matrix::new(4, 4, matrix_values_a);
+        let matrix_b = Matrix::new(4, 4, matrix_values_b);
+        let transposed_matrix = transpose.matrix_a;
+        assert!(transposed_matrix == matrix_b);
+    }
+
+    fn transpose_identitymatrix(){
+
+        let matrix_values_i = vec![
+            vec![1.0, 0.0, 0.0, 0.0],
+            vec![0.0, 1.0, 0.0, 0.0],
+            vec![0.0, 0.0, 1.0, 0.0],
+            vec![0.0, 0.0, 0.0, 1.0],
+        ];
+
+        let matrix_i = Matrix::new(4, 4, matrix_values_i);
+        let transposed_matrix = transpose.matrix_i;
+        assert!(transposed_matrix == matrix_i);
+    }
+
+
+
+
+
 
 
 

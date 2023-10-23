@@ -275,7 +275,7 @@ mod tests {
     }
 
     #[test]
-    fn write_color_to_canvas(){
+    fn write_color_to_canvas() {
         // Does this need to be mut?
         let mut new_canvas = Canvas::new(10, 20);
 

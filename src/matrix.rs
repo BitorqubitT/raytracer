@@ -46,10 +46,23 @@ impl Matrix {
         }
    } 
 
-   pub fn transpose() -> Self::Output {
-        
+   // When transposing, do we want to keep the old one aswell?
+   // I loop, but I can also hardcode it per n*m, this would be faster.
+   // Check output type.
+   pub fn transpose(&self) -> Self {
+        let mut transposed_matrix_values = vec![];
 
-
+        for j in 0..self.width {
+            // let mut row = Vec::with_capacity(self.height + 1); // capacity set for better performance
+            let mut row = vec![1f64,];    
+            for i in 0..self.height {
+                row.push(self.data[i][j])
+            }
+        transposed_matrix_values.push(row);
+        }
+    
+    let transposed_matrix = Matrix::new(self.width, self.height, transposed_matrix_values);
+    return transposed_matrix
    }
 
 }
@@ -135,7 +148,6 @@ impl Mul<Tuple> for Matrix {
 
 #[cfg(test)]
 mod tests {
-    use crate::tuple;
 
     use super::*;
 
@@ -385,6 +397,7 @@ mod tests {
         assert!(matrix_i * tuple_a == tuple_b);
     }
 
+    #[test]
     fn transpose_matrix(){
 
         let matrix_values_a = vec![
@@ -403,10 +416,12 @@ mod tests {
 
         let matrix_a = Matrix::new(4, 4, matrix_values_a);
         let matrix_b = Matrix::new(4, 4, matrix_values_b);
-        let transposed_matrix = transpose.matrix_a;
+        let transposed_matrix = matrix_a.transpose();
+        println!("{:?}", transposed_matrix);
         assert!(transposed_matrix == matrix_b);
     }
 
+    #[test]
     fn transpose_identitymatrix(){
 
         let matrix_values_i = vec![
@@ -417,7 +432,7 @@ mod tests {
         ];
 
         let matrix_i = Matrix::new(4, 4, matrix_values_i);
-        let transposed_matrix = transpose.matrix_i;
+        let transposed_matrix = matrix_i.transpose();
         assert!(transposed_matrix == matrix_i);
     }
 

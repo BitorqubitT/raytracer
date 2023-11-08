@@ -54,7 +54,7 @@ impl Matrix {
 
         for j in 0..self.width {
             // let mut row = Vec::with_capacity(self.height + 1); // capacity set for better performance
-            let mut row = vec![1f64,];    
+            let mut row = vec![];    
             for i in 0..self.height {
                 row.push(self.data[i][j])
             }
@@ -64,6 +64,17 @@ impl Matrix {
     let transposed_matrix = Matrix::new(self.width, self.height, transposed_matrix_values);
     return transposed_matrix
    }
+
+   pub fn determinant(&self) -> f64 {
+        // matrix must be 2*2
+        if self.width != 2 || self.height != 2 {
+            panic!("Matrix must be 2 by 2.");
+        }
+
+    let determinant = self.data[0][0] * self.data[1][1] - self.data[0][1] * self.data[1][0]; 
+    return determinant
+   }
+
 
 }
 
@@ -417,7 +428,6 @@ mod tests {
         let matrix_a = Matrix::new(4, 4, matrix_values_a);
         let matrix_b = Matrix::new(4, 4, matrix_values_b);
         let transposed_matrix = matrix_a.transpose();
-        println!("{:?}", transposed_matrix);
         assert!(transposed_matrix == matrix_b);
     }
 
@@ -436,7 +446,31 @@ mod tests {
         assert!(transposed_matrix == matrix_i);
     }
 
+    #[test]
+    fn calculate_determinant(){
 
+        let matrix_values_a = vec![
+            vec![1.0, 5.0],
+            vec![-3.0, 2.0],
+        ];
+
+        let matrix_a = Matrix::new(2, 2, matrix_values_a);
+        let determinant = 17.0;
+     
+        assert!(matrix_a.determinant() == determinant);
+    }
+
+
+    // submatrux(M, removerow, reyymovecolumn)
+    // maybe implement this for all sizes?
+    #[test]
+    fn get_submatrix(){
+       let matrix_values_a = vec![
+            vec![3.0, 5.0, 0.0],
+            vec![2.0, -1.0, -7.0],
+            vec![6.0, -1.0, 5.0],
+        ];
+    }
 
 
 

@@ -75,6 +75,28 @@ impl Matrix {
     return determinant
    }
 
+   pub fn submatrix(&self, row: i64, column: i64) -> Self {
+
+    // Better way to slice?
+    // Plan now is to just rebuild the matrix.
+    // create new matrix based on shape
+    // is this memory efficient?
+    // Do we "destroy" old matrix, otherwise we might keep too many in memory for now reason
+    // Or does garbage collector take care of this
+
+        let mut matrix_values = vec![];
+
+        for j in 0..self.width {
+            // let mut row = Vec::with_capacity(self.height + 1); // capacity set for better performance
+            let mut row = vec![];    
+            for i in 0..self.height {
+                row.push(self.data[i][j])
+            }
+        matrix_values.push(row);
+
+    let submatrix = Matrix::new(self.widht - 1, self.height -1, matrix_values);
+    return submatrix
+   }
 
 }
 
@@ -459,7 +481,6 @@ mod tests {
      
         assert!(matrix_a.determinant() == determinant);
     }
-
 
     // submatrux(M, removerow, reyymovecolumn)
     // maybe implement this for all sizes?

@@ -75,7 +75,7 @@ impl Matrix {
     return determinant
    }
 
-   pub fn submatrix(&self, row: i64, column: i64) -> Self {
+   pub fn submatrix(&self, row: usize, column: usize) -> Self {
 
     // Better way to slice?
     // Plan now is to just rebuild the matrix.
@@ -88,13 +88,21 @@ impl Matrix {
 
         for j in 0..self.width {
             // let mut row = Vec::with_capacity(self.height + 1); // capacity set for better performance
-            let mut row = vec![];    
-            for i in 0..self.height {
-                row.push(self.data[i][j])
-            }
-        matrix_values.push(row);
+            let mut new_row = vec![];
 
-    let submatrix = Matrix::new(self.widht - 1, self.height -1, matrix_values);
+            for i in 0..self.height {
+                if j == column || i == row {
+                    continue
+                } else {
+                    new_row.push(self.data[i][j])
+                }
+            }
+            if i != row {
+                matrix_values.push(new_row);
+            }
+        }
+
+    let submatrix = Matrix::new(self.width - 1, self.height -1, matrix_values);
     return submatrix
    }
 
@@ -484,18 +492,68 @@ mod tests {
 
     // submatrux(M, removerow, reyymovecolumn)
     // maybe implement this for all sizes?
+    // We get a submatrix
     #[test]
     fn get_submatrix(){
+
+       let matrix_values_a = vec![
+            vec![1.0, 5.0, 0.0],
+            vec![-3.0, 2.0, 7.0],
+            vec![0.0, 6.0, -3.0],
+        ];
+
+       let sub_matrix_values_a = vec![
+            vec![-3.0, 2.0],
+            vec![0.0, 6.0],
+        ];
+
+       let matrix_values_b = vec![
+            vec![-6.0, 1.0, 1.0, 6.0],
+            vec![-8.0, 5.0, 8.0, 6.0],
+            vec![-1.0, 0.0, 8.0, 2.0],
+            vec![-7.0, 1.0, -1.0, 1.0],
+        ];
+
+       let sub_matrix_values_b = vec![
+            vec![-6.0, 1.0, 6.0],
+            vec![-8.0, 8.0, 6.0],
+            vec![-7.0, -1.0, 1.0],
+        ];
+
+        let matrix_a = Matrix::new(3, 3, matrix_values_a);
+        let sub_matrix_a = Matrix::new(2, 2, sub_matrix_values_a);
+        let matrix_b = Matrix::new(4, 4, matrix_values_b);
+        let sub_matrix_b = Matrix::new(3, 3, sub_matrix_values_b);
+
+        let x = matrix_b.submatrix(0, 2);
+        println!("{:?}", x);
+
+        assert!(sub_matrix_a == matrix_a.submatrix(0, 2));
+        assert!(sub_matrix_b == matrix_b.submatrix(2, 1));
+    
+    }
+
+    // We calculate the minors    
+    #[test]
+    fn get_minor(){
+
        let matrix_values_a = vec![
             vec![3.0, 5.0, 0.0],
             vec![2.0, -1.0, -7.0],
             vec![6.0, -1.0, 5.0],
         ];
+
+        let matrix_a = Matrix::new(3, 3, matrix_values_a);
+
+
+        // b <- submatrix(a, 1, 0)
+        // det(b) =25
+        // minor(a, 1, 0) = 25
+        // assert!();
+
+
+
+
+
     }
-
-
-
-
-
-
 }

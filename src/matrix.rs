@@ -84,6 +84,8 @@ impl Matrix {
     // Do we "destroy" old matrix, otherwise we might keep too many in memory for now reason
     // Or does garbage collector take care of this
 
+        // The problem is that we never check, the values
+
         let mut matrix_values = vec![];
 
         for j in 0..self.width {

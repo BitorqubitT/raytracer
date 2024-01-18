@@ -3,6 +3,9 @@ use std::cmp::PartialEq;
 
 use crate::tuple::Tuple;
 
+// Current:
+// Get minor
+
 // Questions:
 // Functions need to be public to use them in ch03, but is this the only reason
 // I already have a lib which makes "script public" or just the implementation?
@@ -78,28 +81,25 @@ impl Matrix {
    pub fn submatrix(&self, row: usize, column: usize) -> Self {
 
     // Better way to slice?
-    // Plan now is to just rebuild the matrix.
-    // create new matrix based on shape
+    // Better way than iterating?
     // is this memory efficient?
     // Do we "destroy" old matrix, otherwise we might keep too many in memory for now reason
-    // Or does garbage collector take care of this
-
-        // The problem is that we never check, the values
 
         let mut matrix_values = vec![];
 
-        for j in 0..self.width {
+        for i in 0..self.height {
             // let mut row = Vec::with_capacity(self.height + 1); // capacity set for better performance
             let mut new_row = vec![];
 
-            for i in 0..self.height {
+            for j in 0..self.width {
+                // When we see that column or row is equal we go next
                 if j == column || i == row {
                     continue
                 } else {
                     new_row.push(self.data[i][j])
                 }
             }
-            if i != row {
+            if new_row.len() != 0 {
                 matrix_values.push(new_row);
             }
         }
@@ -494,7 +494,6 @@ mod tests {
 
     // submatrux(M, removerow, reyymovecolumn)
     // maybe implement this for all sizes?
-    // We get a submatrix
     #[test]
     fn get_submatrix(){
 

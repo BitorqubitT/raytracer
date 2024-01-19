@@ -4,12 +4,13 @@ use std::cmp::PartialEq;
 use crate::tuple::Tuple;
 
 // Current:
-// Get minor
+// Implement get minor
 
 // Questions:
 // Functions need to be public to use them in ch03, but is this the only reason
 // I already have a lib which makes "script public" or just the implementation?
 // Implement Eq for comparing matrices -> what is the difference: ops, cmp
+
 
 // TODO:
 // Use my own struct. How to create impl for m * tuple
@@ -545,16 +546,20 @@ mod tests {
         ];
 
         let matrix_a = Matrix::new(3, 3, matrix_values_a);
+        let b = matrix_a.submatrix(1, 0);
 
+        // We call this the minor
+        // Have to add the function yet.
+        assert!(25.0 == b.determinant());
+    }
 
-        // b <- submatrix(a, 1, 0)
-        // det(b) =25
-        // minor(a, 1, 0) = 25
-        // assert!();
-
-
-
+    #[test]
+    fn get_cofacts(){
 
 
     }
+
+
+
+
 }

@@ -4,13 +4,14 @@ use std::cmp::PartialEq;
 use crate::tuple::Tuple;
 
 // Current:
-// Implement get minor
+// Check if minor implementation makes sense, rustwise
+// Implement cofactors
 
 // Questions:
 // Functions need to be public to use them in ch03, but is this the only reason
 // I already have a lib which makes "script public" or just the implementation?
 // Implement Eq for comparing matrices -> what is the difference: ops, cmp
-
+// Does the implementation of minor make sense, when should I implement it as part of matrix and when shouldnt I?
 
 // TODO:
 // Use my own struct. How to create impl for m * tuple
@@ -107,6 +108,17 @@ impl Matrix {
 
     let submatrix = Matrix::new(self.width - 1, self.height -1, matrix_values);
     return submatrix
+   }
+
+    // get minor
+    // Is this the best way to implement?
+    // Should it be a part of matrix?
+    pub fn minor(&self, row: usize, column:usize) -> f64 {
+
+        let submatrix = self.submatrix(row, column);
+        let determinant_a = submatrix.determinant();
+
+        return determinant_a
    }
 
 }
@@ -550,7 +562,7 @@ mod tests {
 
         // We call this the minor
         // Have to add the function yet.
-        assert!(25.0 == b.determinant());
+        assert!(25.0 == matrix_a.minor(1, 0));
     }
 
     #[test]

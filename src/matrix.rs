@@ -558,10 +558,10 @@ mod tests {
         ];
 
         let matrix_a = Matrix::new(3, 3, matrix_values_a);
-        let b = matrix_a.submatrix(1, 0);
 
         // We call this the minor
-        // Have to add the function yet.
+        // Is this the complete implementation of this test?
+        // Or am I forgetting something>?
         assert!(25.0 == matrix_a.minor(1, 0));
     }
 

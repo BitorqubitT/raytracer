@@ -27,7 +27,6 @@ use crate::tuple::Tuple;
 pub struct Matrix {
     // CHange this
     // width and height should just check the data
-    // Is this possible?
     pub width: usize,
     pub height: usize,
     pub data: Vec<Vec<f64>>,
@@ -561,7 +560,6 @@ mod tests {
 
         // We call this the minor
         // Is this the complete implementation of this test?
-        // Or am I forgetting something>?
         assert!(25.0 == matrix_a.minor(1, 0));
     }
 

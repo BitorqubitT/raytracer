@@ -565,7 +565,16 @@ mod tests {
 
     #[test]
     fn get_cofacts(){
+       
+       let matrix_values_a = vec![
+            vec![3.0, 5.0, 0.0],
+            vec![2.0, -1.0, -7.0],
+            vec![6.0, -1.0, 5.0],
+        ];
 
+        let matrix_a = Matrix::new(3, 3, matrix_values_a);
+
+        assert!(-12.0 == matrix_a.minor(0, 0))
 
     }
 

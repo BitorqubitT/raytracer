@@ -1,5 +1,5 @@
 use std::ops::{Index, IndexMut, Mul};
-use std::cmp::PartialEq;
+use std::cmp::{min, PartialEq};
 
 use crate::tuple::Tuple;
 
@@ -118,6 +118,19 @@ impl Matrix {
         let determinant_a = submatrix.determinant();
 
         return determinant_a
+   }
+
+   pub fn cofactor(&self, row: usize, column:usize) -> f64 {
+
+        let minor_a = self.minor(row, column);
+
+        // Weird there are no type errors?
+        // We can just add usizes? and test devision by 2, without it being an flt.
+        if (row + column) % 2 == 0 {
+            return minor_a
+        } 
+        let cofactor_a = minor_a * -1.0;
+        return cofactor_a
    }
 
 }
@@ -538,9 +551,6 @@ mod tests {
         let matrix_b = Matrix::new(4, 4, matrix_values_b);
         let sub_matrix_b = Matrix::new(3, 3, sub_matrix_values_b);
 
-        let x = matrix_b.submatrix(0, 2);
-        println!("{:?}", x);
-
         assert!(sub_matrix_a == matrix_a.submatrix(0, 2));
         assert!(sub_matrix_b == matrix_b.submatrix(2, 1));
     
@@ -558,8 +568,6 @@ mod tests {
 
         let matrix_a = Matrix::new(3, 3, matrix_values_a);
 
-        // We call this the minor
-        // Is this the complete implementation of this test?
         assert!(25.0 == matrix_a.minor(1, 0));
     }
 
@@ -574,11 +582,30 @@ mod tests {
 
         let matrix_a = Matrix::new(3, 3, matrix_values_a);
 
-        assert!(-12.0 == matrix_a.minor(0, 0))
+        assert!(-12.0 == matrix_a.cofactor(0, 0));
+        assert!(-25.0 == matrix_a.cofactor(1, 0));
 
     }
 
+    #[test]
+    fn calculate_determinant_of_3x3(){
+    
+       let matrix_values_a = vec![
+            vec![1.0, 2.0, 6.0],
+            vec![-5.0, 8.0, -4.0],
+            vec![2.0, 6.0, 4.0],
+        ];
+    }
 
+    #[test]
+    fn calculate_determinant_of_4x4(){
+       let matrix_values_b = vec![
+            vec![-2.0, -8.0, 3.0, 5.0],
+            vec![-3.0, 1.0, 7.0, 3.0],
+            vec![1.0, 2.0, -9.0, 6.0],
+            vec![-6.0, 7.0, 7.0,-9.0],
+        ];
+    }
 
 
 }

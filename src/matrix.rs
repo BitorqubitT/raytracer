@@ -595,6 +595,14 @@ mod tests {
             vec![-5.0, 8.0, -4.0],
             vec![2.0, 6.0, 4.0],
         ];
+
+        let matrix_a = Matrix::new(3, 3, matrix_values_a);
+       
+        assert!(56.0 == matrix_a.cofactor(0, 0));
+        assert!(56.0 == matrix_a.cofactor(0, 1));
+        assert!(56.0 == matrix_a.cofactor(0, 2));
+        assert!(56.0 == matrix_a.determinant());
+
     }
 
     #[test]
@@ -605,6 +613,14 @@ mod tests {
             vec![1.0, 2.0, -9.0, 6.0],
             vec![-6.0, 7.0, 7.0,-9.0],
         ];
+        
+        let matrix_a = Matrix::new(4, 4, matrix_values_a);
+       
+        assert!(56.0 == matrix_a.cofactor(0, 0));
+        assert!(56.0 == matrix_a.cofactor(0, 1));
+        assert!(56.0 == matrix_a.cofactor(0, 2));
+        assert!(56.0 == matrix_a.determinant());
+
     }
 
 

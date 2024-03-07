@@ -70,13 +70,22 @@ impl Matrix {
    }
 
    pub fn determinant(&self) -> f64 {
-        // matrix must be 2*2
-        if self.width != 2 || self.height != 2 {
-            panic!("Matrix must be 2 by 2.");
+        
+        if self.width == 2 || self.height == 2 {
+            let determinant = self.data[0][0] * self.data[1][1] - self.data[0][1] * self.data[1][0]; 
+
+            return determinant
+        }
+        else {
+           let mut determinant = 0.0;
+
+           for j in 0..self.width {
+                determinant = determinant + (self[0][j] * self.cofactor(0, j));
+
+           } 
+            return determinant
         }
 
-    let determinant = self.data[0][0] * self.data[1][1] - self.data[0][1] * self.data[1][0]; 
-    return determinant
    }
 
    pub fn submatrix(&self, row: usize, column: usize) -> Self {
@@ -599,15 +608,15 @@ mod tests {
         let matrix_a = Matrix::new(3, 3, matrix_values_a);
        
         assert!(56.0 == matrix_a.cofactor(0, 0));
-        assert!(56.0 == matrix_a.cofactor(0, 1));
-        assert!(56.0 == matrix_a.cofactor(0, 2));
-        assert!(56.0 == matrix_a.determinant());
+        assert!(12.0 == matrix_a.cofactor(0, 1));
+        assert!(-46.0 == matrix_a.cofactor(0, 2));
+        assert!(-196.0 == matrix_a.determinant());
 
     }
 
     #[test]
     fn calculate_determinant_of_4x4(){
-       let matrix_values_b = vec![
+       let matrix_values_a = vec![
             vec![-2.0, -8.0, 3.0, 5.0],
             vec![-3.0, 1.0, 7.0, 3.0],
             vec![1.0, 2.0, -9.0, 6.0],
@@ -616,12 +625,33 @@ mod tests {
         
         let matrix_a = Matrix::new(4, 4, matrix_values_a);
        
-        assert!(56.0 == matrix_a.cofactor(0, 0));
-        assert!(56.0 == matrix_a.cofactor(0, 1));
-        assert!(56.0 == matrix_a.cofactor(0, 2));
-        assert!(56.0 == matrix_a.determinant());
+        assert!(690.0 == matrix_a.cofactor(0, 0));
+        assert!(447.0 == matrix_a.cofactor(0, 1));
+        assert!(210.0 == matrix_a.cofactor(0, 2));
+        assert!(51.0 == matrix_a.cofactor(0, 3));
+        assert!(-4071.0 == matrix_a.determinant());
 
     }
+
+    #[test]
+    fn calculate_inverse(){
+       let matrix_values_a = vec![
+            vec![-5.0, 2.0, 6.0, -8.0],
+            vec![1.0, -5.0, 1.0, 8.0],
+            vec![7.0, 7.0, -6.0, -7.0],
+            vec![1.0, -3.0, 7.0, 4.0],
+        ];
+
+        let matrix_a = Matrix::new(4, 4, matrix_values_a);
+
+        assert!(532.0 = matrix_a.determinant());
+        assert!(-160.0 = matrix_a.cofactor(2, 3));
+        assert!(-160.0 / 532.0 == matrix_b[3][2]);
+        assert!(105.0 = matrix_a.cofactor(3, 2));
+        assert!(105.0 / 532.0 = matrix_b[2][3]);
+    }
+
+
 
 
 }

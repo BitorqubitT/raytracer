@@ -142,6 +142,20 @@ impl Matrix {
         return cofactor_a
    }
 
+   pub fn inverse(&self) -> Matrix {
+
+
+
+
+
+
+   }
+
+
+
+
+
+
 }
 
 impl Index<usize> for Matrix {

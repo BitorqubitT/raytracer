@@ -642,13 +642,22 @@ mod tests {
             vec![1.0, -3.0, 7.0, 4.0],
         ];
 
-        let matrix_a = Matrix::new(4, 4, matrix_values_a);
+       let matrix_values_b = vec![
+            vec![0.21805, 0.45113, 0.24060, -0.04511],
+            vec![-0.80827, -1.45677, -0.44361, 0.52068],
+            vec![-0.07895, -0.22368, -0.05263, 0.19737],
+            vec![-0.52256, -0.81391, 0.30075, 0.30639],
+        ];
 
-        assert!(532.0 = matrix_a.determinant());
-        assert!(-160.0 = matrix_a.cofactor(2, 3));
+        let matrix_a = Matrix::new(4, 4, matrix_values_a);
+        let matrix_b = Matrix::new(4, 4, matrix_values_b);
+
+        assert!(matrix_b == matrix_a.inverse());
+        assert!(532.0 == matrix_a.determinant());
+        assert!(-160.0 == matrix_a.cofactor(2, 3));
         assert!(-160.0 / 532.0 == matrix_b[3][2]);
-        assert!(105.0 = matrix_a.cofactor(3, 2));
-        assert!(105.0 / 532.0 = matrix_b[2][3]);
+        assert!(105.0 == matrix_a.cofactor(3, 2));
+        assert!(105.0 / 532.0 == matrix_b[2][3]);
     }
 
 

@@ -17,6 +17,7 @@ use crate::tuple::Tuple;
 // Use my own struct. How to create impl for m * tuple
 // Matrix mul speed?
 // WHy cant I use the trait COPY in matrix?
+// Check indentation of the returns in most functions.
 
 // Change:
 // Check when to use &, without you consume the variable.
@@ -146,32 +147,23 @@ impl Matrix {
      // First check the determinant
      // if det == 0 then return warning -> cant invert this matrix
 
-    // create new matrix and fill it
-    // check how i do this earlier
+    // Change size of matrix
+    // change order???
 
-    for i in 0..self.height - 1{
-        for j in 0..self.width - 1{
-            
-            let c = self.cofactor(i, j);
-            
-            inverted_matrix[col, row] = c / determinant(m);
+        let mut matrix_values = vec![];
 
+        for i in 0..self.height - 1{
+            let mut new_row = vec![];
 
+            for j in 0..self.width - 1{
+                let c = self.cofactor(i, j);
+                new_row.push(c / self.determinant());
+            }
+            matrix_values.push(new_row);
         }
-
-
-    }
-
-
-
-
-
+        let submatrix = Matrix::new(self.width, self.height, matrix_values);
+        return submatrix
    }
-
-
-
-
-
 
 }
 
@@ -682,6 +674,9 @@ mod tests {
 
         let matrix_a = Matrix::new(4, 4, matrix_values_a);
         let matrix_b = Matrix::new(4, 4, matrix_values_b);
+
+
+        println!("{:?}", matrix_a.inverse());
 
         assert!(matrix_b == matrix_a.inverse());
         assert!(532.0 == matrix_a.determinant());

@@ -143,7 +143,24 @@ impl Matrix {
    }
 
    pub fn inverse(&self) -> Matrix {
+     // First check the determinant
+     // if det == 0 then return warning -> cant invert this matrix
 
+    // create new matrix and fill it
+    // check how i do this earlier
+
+    for i in 0..self.height - 1{
+        for j in 0..self.width - 1{
+            
+            let c = self.cofactor(i, j);
+            
+            inverted_matrix[col, row] = c / determinant(m);
+
+
+        }
+
+
+    }
 
 
 

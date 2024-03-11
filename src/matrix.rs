@@ -1,7 +1,7 @@
 use std::ops::{Index, IndexMut, Mul};
 use std::cmp::{min, PartialEq};
-
 use crate::tuple::Tuple;
+use assert_approx_eq::assert_approx_eq;
 
 // Current:
 // Check if minor implementation makes sense, rustwise
@@ -147,16 +147,16 @@ impl Matrix {
      // First check the determinant
      // if det == 0 then return warning -> cant invert this matrix
 
-    // Change size of matrix
-    // change order???
 
         let mut matrix_values = vec![];
 
-        for i in 0..self.height - 1{
+        // switched row and column to get the inverse.
+
+        for i in 0..self.width{
             let mut new_row = vec![];
 
-            for j in 0..self.width - 1{
-                let c = self.cofactor(i, j);
+            for j in 0..self.height{
+                let c = self.cofactor(j, i);
                 new_row.push(c / self.determinant());
             }
             matrix_values.push(new_row);
@@ -669,7 +669,7 @@ mod tests {
             vec![0.21805, 0.45113, 0.24060, -0.04511],
             vec![-0.80827, -1.45677, -0.44361, 0.52068],
             vec![-0.07895, -0.22368, -0.05263, 0.19737],
-            vec![-0.52256, -0.81391, 0.30075, 0.30639],
+            vec![-0.52256, -0.81391, -0.30075, 0.30639],
         ];
 
         let matrix_a = Matrix::new(4, 4, matrix_values_a);
@@ -677,13 +677,14 @@ mod tests {
 
 
         println!("{:?}", matrix_a.inverse());
+        println!("{:?}", matrix_b);
 
-        assert!(matrix_b == matrix_a.inverse());
-        assert!(532.0 == matrix_a.determinant());
-        assert!(-160.0 == matrix_a.cofactor(2, 3));
-        assert!(-160.0 / 532.0 == matrix_b[3][2]);
-        assert!(105.0 == matrix_a.cofactor(3, 2));
-        assert!(105.0 / 532.0 == matrix_b[2][3]);
+        assert_approx_eq!(matrix_b, matrix_a.inverse());
+        assert_approx_eq!(532.0, matrix_a.determinant());
+        assert_approx_eq!(-160.0, matrix_a.cofactor(2, 3));
+        assert_approx_eq!(-160.0 / 532.0, matrix_b[3][2], 0.00001);
+        assert_approx_eq!(105.0, matrix_a.cofactor(3, 2));
+        assert_approx_eq!(105.0 / 532.0, matrix_b[2][3], 0.00001);
     }
 
 

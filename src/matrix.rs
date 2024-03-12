@@ -1,11 +1,9 @@
-use std::ops::{Index, IndexMut, Mul};
+use std::ops::{Index, IndexMut, Mul, Sub};
 use std::cmp::{min, PartialEq};
 use crate::tuple::Tuple;
 use assert_approx_eq::assert_approx_eq;
 
 // Current:
-// Check if minor implementation makes sense, rustwise
-// Implement cofactors
 
 // Questions:
 // Functions need to be public to use them in ch03, but is this the only reason
@@ -242,6 +240,27 @@ impl Mul<Tuple> for Matrix {
             }
         }
     return new_tuple
+    }
+}
+
+// What is the best implementation
+// Put all values in vectors then put them in matrix impl?
+// Or I create a matrix and then change the values.
+// I do this in Mul implementation.
+impl Sub for Matrix {
+    type Output = Self;
+    
+    fn sub(self, rhs: Self) -> Self::Output {
+        
+        let matrix_values: Vec<Vec<f64>> = vec![vec![0.0; self.width]; self.height];
+        let mut result = Matrix::new(self.width, self.height, matrix_values);
+        
+        for i in 0..self.height {
+            for j in 0..rhs.width {
+               result[i][j] = self[i][j] - rhs[i][j];
+            }
+        }
+    return result
     }
 }
 
@@ -675,9 +694,13 @@ mod tests {
         let matrix_a = Matrix::new(4, 4, matrix_values_a);
         let matrix_b = Matrix::new(4, 4, matrix_values_b);
 
-
         println!("{:?}", matrix_a.inverse());
         println!("{:?}", matrix_b);
+
+// might need to implement sub for matrix.
+// this is how assert_approx calcs the difference i guess.
+// Should fix this test, but can also use a dumb one and the if the resulting matrix is zero.
+// Still have the problem with rounding.
 
         assert_approx_eq!(matrix_b, matrix_a.inverse());
         assert_approx_eq!(532.0, matrix_a.determinant());
@@ -689,5 +712,6 @@ mod tests {
 
 
 
+//add the last two tests for inverse of matrixyy
 
 }

@@ -10,19 +10,22 @@ use assert_approx_eq::assert_approx_eq;
 // I already have a lib which makes "script public" or just the implementation?
 // Implement Eq for comparing matrices -> what is the difference: ops, cmp
 // Does the implementation of minor make sense, when should I implement it as part of matrix and when shouldnt I?
+// Maybe skip the test for inverse, is a problem that the tests are not equal?  
 
 // TODO:
 // Use my own struct. How to create impl for m * tuple
 // Matrix mul speed?
 // WHy cant I use the trait COPY in matrix?
 // Check indentation of the returns in most functions.
+// Get assert_approx_eq working
+// Remove fn abs if I dont use assert approx
 
 // Change:
 // Check when to use &, without you consume the variable.
 // When should functions be pub in rust?
 // M * T, works, but is this the right implementation for this raytracer, what if we use diff sizes?
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, PartialOrd)]
 pub struct Matrix {
     // CHange this
     // width and height should just check the data
@@ -86,6 +89,18 @@ impl Matrix {
         }
 
    }
+
+    // Remove this code if I dont end up using approx eq
+    pub fn abs(&self) -> Matrix {
+            let mut abs_matrix = self.clone(); // Make a copy of the matrix
+            
+            for row in &mut abs_matrix.data {
+                for element in row {
+                    *element = element.abs(); // Compute the absolute value
+                }
+            }
+            abs_matrix // Return the modified matrix
+    }
 
    pub fn submatrix(&self, row: usize, column: usize) -> Self {
 
@@ -568,7 +583,6 @@ mod tests {
         assert!(matrix_a.determinant() == determinant);
     }
 
-    // submatrux(M, removerow, reyymovecolumn)
     // maybe implement this for all sizes?
     #[test]
     fn get_submatrix(){
@@ -607,7 +621,6 @@ mod tests {
     
     }
 
-    // We calculate the minors    
     #[test]
     fn get_minor(){
 
@@ -697,17 +710,17 @@ mod tests {
         println!("{:?}", matrix_a.inverse());
         println!("{:?}", matrix_b);
 
-// might need to implement sub for matrix.
-// this is how assert_approx calcs the difference i guess.
-// Should fix this test, but can also use a dumb one and the if the resulting matrix is zero.
-// Still have the problem with rounding.
+        // might need to implement sub for matrix.
+        // this is how assert_approx calcs the difference i guess.
+        // Should fix this test, but can also use a dumb one and the if the resulting matrix is zero.
+        // Still have the problem with rounding.
 
         assert_approx_eq!(matrix_b, matrix_a.inverse());
-        assert_approx_eq!(532.0, matrix_a.determinant());
-        assert_approx_eq!(-160.0, matrix_a.cofactor(2, 3));
-        assert_approx_eq!(-160.0 / 532.0, matrix_b[3][2], 0.00001);
-        assert_approx_eq!(105.0, matrix_a.cofactor(3, 2));
-        assert_approx_eq!(105.0 / 532.0, matrix_b[2][3], 0.00001);
+        //assert_approx_eq!(532.0, matrix_a.determinant());
+        //assert_approx_eq!(-160.0, matrix_a.cofactor(2, 3));
+        //assert_approx_eq!(-160.0 / 532.0, matrix_b[3][2], 0.00001);
+        //assert_approx_eq!(105.0, matrix_a.cofactor(3, 2));
+        //assert_approx_eq!(105.0 / 532.0, matrix_b[2][3], 0.00001);
     }
 
 

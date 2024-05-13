@@ -3,21 +3,24 @@ use std::cmp::{min, PartialEq};
 use crate::tuple::Tuple;
 use assert_approx_eq::assert_approx_eq;
 
-// Current:
+// Page 44
+
+// TODO
+// The calculate inverse tests are broken.
+// Approx_eq doesnt work, which we need to compare up to x decimals
+
+// Write several test
+// Then implement the function for them
+
 
 // Questions:
 // Functions need to be public to use them in ch03, but is this the only reason
 // I already have a lib which makes "script public" or just the implementation?
 // Does the implementation of minor make sense, when should I implement it as part of matrix and when shouldnt I?
-
-// TODO:
 // Use my own struct. How to create impl for m * tuple
 // Matrix mul speed?
 // WHy cant I use the trait COPY in matrix?
 // Check indentation of the returns in most functions.
-// Get assert_approx_eq working
-// FIx inverse test using the assert_approx_eq
-// Remove fn abs if I dont use assert approx
 
 // Change:
 // Check when to use &, without you consume the variable.
@@ -722,6 +725,11 @@ mod tests {
         //assert_approx_eq!(105.0 / 532.0, matrix_b[2][3], 0.00001);
     }
 
+    #[test]
+    fn translation(){
+
+
+    }
 
 
 //add the last two tests for inverse of matrixyy

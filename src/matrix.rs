@@ -1,8 +1,7 @@
 use std::ops::{Index, IndexMut, Mul, Sub};
 use std::cmp::{min, PartialEq};
 use crate::tuple::Tuple;
-use assert_approx_eq::assert_approx_eq;
-
+use crate::approx_eq::*;
 
 
 // Page 44
@@ -286,6 +285,22 @@ impl Sub for Matrix {
     return result
     }
 }
+
+// Any constraints to add?
+impl ApproxEq for Matrix {
+    fn approx_eq(&self, other: Self) -> bool {
+        for row in 0..self.height {
+            for col in 0..self.width {
+                if self[row][col].approx_eq(other[row][col]) {
+                    return false;
+                }
+            }
+        }
+        true
+    }
+}
+
+
 
 
 #[cfg(test)]

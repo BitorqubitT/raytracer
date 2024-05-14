@@ -29,5 +29,4 @@ mod tests {
         assert(a.fuzzy_eq(b));
     }
 
-
 }

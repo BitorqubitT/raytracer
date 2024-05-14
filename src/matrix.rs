@@ -8,6 +8,10 @@ use assert_approx_eq::assert_approx_eq;
 // TODO
 // The calculate inverse tests are broken.
 // Approx_eq doesnt work, which we need to compare up to x decimals
+// maybe faster to create my own approx function.
+// First for float and you can pick up to which one (maybe round first)
+// then apply this for matrices
+
 
 // Write several test
 // Then implement the function for them

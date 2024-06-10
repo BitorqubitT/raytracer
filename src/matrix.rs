@@ -1,22 +1,13 @@
 use std::ops::{Index, IndexMut, Mul, Sub};
 use std::cmp::{min, PartialEq};
 use crate::tuple::Tuple;
-use crate::approx_eq::*;
-
+//use approx_eq::*;
 
 // Page 44
 
 // TODO
 // The calculate inverse tests are broken.
-// Approx_eq doesnt work, which we need to compare up to x decimals
-// maybe faster to create my own approx function.
-// First for float and you can pick up to which one (maybe round first)
-// then apply this for matrices
-
-
-// Write several test
-// Then implement the function for them
-
+// Finish approx function for matrices
 
 // Questions:
 // Functions need to be public to use them in ch03, but is this the only reason
@@ -287,10 +278,12 @@ impl Sub for Matrix {
 }
 
 // Any constraints to add?
+/*
 impl ApproxEq for Matrix {
     fn approx_eq(&self, other: Self) -> bool {
         for row in 0..self.height {
             for col in 0..self.width {
+                // pretty sure this should reference the function in approx_eq.rs
                 if self[row][col].approx_eq(other[row][col]) {
                     return false;
                 }
@@ -299,7 +292,7 @@ impl ApproxEq for Matrix {
         true
     }
 }
-
+*/
 
 
 

@@ -14,7 +14,6 @@ impl ApproxEq for f64 {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
 
@@ -28,5 +27,4 @@ mod tests {
 
         assert(a.fuzzy_eq(b));
     }
-
 }

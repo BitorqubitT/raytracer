@@ -1,7 +1,7 @@
 use std::ops::{Index, IndexMut, Mul, Sub};
-use std::cmp::{min, PartialEq};
+use std::cmp::PartialEq;
 use crate::tuple::Tuple;
-//use approx_eq::*;
+use crate::approx_eq::*;
 
 // Page 44
 
@@ -133,7 +133,7 @@ impl Matrix {
     // get minor
     // Is this the best way to implement?
     // Should it be a part of matrix?
-    pub fn minor(&self, row: usize, column:usize) -> f64 {
+   pub fn minor(&self, row: usize, column:usize) -> f64 {
 
         let submatrix = self.submatrix(row, column);
         let determinant_a = submatrix.determinant();
@@ -278,13 +278,12 @@ impl Sub for Matrix {
 }
 
 // Any constraints to add?
-/*
 impl ApproxEq for Matrix {
     fn approx_eq(&self, other: Self) -> bool {
         for row in 0..self.height {
             for col in 0..self.width {
                 // pretty sure this should reference the function in approx_eq.rs
-                if self[row][col].approx_eq(other[row][col]) {
+                if self[row][col].fuzzy_eq(other[row][col]) {
                     return false;
                 }
             }
@@ -292,7 +291,6 @@ impl ApproxEq for Matrix {
         true
     }
 }
-*/
 
 
 

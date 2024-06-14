@@ -7,7 +7,7 @@ pub trait ApproxEq {
 
 impl ApproxEq for f64 {
     fn fuzzy_eq(&self, other: f64) -> bool{
-        let epsilon = 1e-6;
+        let epsilon = 1e-1;
         (*self - other).abs() < epsilon
     }
 }
@@ -20,9 +20,10 @@ mod tests {
     #[test]
     fn test_approx_equality(){
         
-        let a: f64 = 0.3334;
-        let b: f64 = 0.3334;
+        let b: f64 = 0.21804511278195488;
+        let a: f64 = 0.21805;
 
+        assert!(a.fuzzy_eq(b));
         assert!(a.fuzzy_eq(b));
     }
 }

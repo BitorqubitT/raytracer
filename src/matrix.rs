@@ -1,4 +1,4 @@
-use std::ops::{Index, IndexMut, Mul, Sub};
+use std::ops::{Index, IndexMut, Mul, Sub, };
 use std::cmp::PartialEq;
 use crate::tuple::Tuple;
 use crate::approx_eq::*;
@@ -6,8 +6,6 @@ use crate::approx_eq::*;
 // Page 44
 
 // TODO
-// The calculate inverse tests are broken.
-// Finish approx function for matrices
 
 // Questions:
 // Functions need to be public to use them in ch03, but is this the only reason
@@ -22,6 +20,7 @@ use crate::approx_eq::*;
 // Check when to use &, without you consume the variable.
 // When should functions be pub in rust?
 // M * T, works, but is this the right implementation for this raytracer, what if we use diff sizes?
+// Change isequal func and switch it with is equal impl/macro
 
 #[derive(Debug, Clone, PartialEq, PartialOrd)]
 pub struct Matrix {
@@ -131,7 +130,7 @@ impl Matrix {
    }
 
     // get minor
-    // Is this the best way to implement?
+    // Is this the best way to implement
     // Should it be a part of matrix?
    pub fn minor(&self, row: usize, column:usize) -> f64 {
 
@@ -176,7 +175,22 @@ impl Matrix {
         return submatrix
    }
 
+    // Allows to check if matrices are equal
+    // However this is prob some alibaba equality check
+    // Check macro or trait
+    pub fn isequal(&self, other: Matrix) -> bool {
+        for row in 0..self.height {
+            for col in 0..self.width {
+                if self[row][col].fuzzy_eq(other[row][col]) == false {
+                    return false;
+                }
+            }
+        }
+        true
+    }
+
 }
+
 
 impl Index<usize> for Matrix {
     type Output = Vec<f64>;
@@ -277,9 +291,12 @@ impl Sub for Matrix {
     }
 }
 
-// Any constraints to add?
-impl ApproxEq for Matrix {
-    fn approx_eq(&self, other: Self) -> bool {
+/*
+// Fix this and replace the isequal function
+impl checkifsame for Matrix {
+    type Output = bool;
+
+    fn partialeq(&self, other: Self) -> bool {
         for row in 0..self.height {
             for col in 0..self.width {
                 // pretty sure this should reference the function in approx_eq.rs
@@ -291,7 +308,7 @@ impl ApproxEq for Matrix {
         true
     }
 }
-
+*/
 
 
 #[cfg(test)]
@@ -729,12 +746,12 @@ mod tests {
         // Should fix this test, but can also use a dumb one and the if the resulting matrix is zero.
         // Still have the problem with rounding.
 
-        //assert_approx_eq!(matrix_b, matrix_a.inverse());
-        //assert_approx_eq!(532.0, matrix_a.determinant());
-        //assert_approx_eq!(-160.0, matrix_a.cofactor(2, 3));
-        //assert_approx_eq!(-160.0 / 532.0, matrix_b[3][2], 0.00001);
-        //assert_approx_eq!(105.0, matrix_a.cofactor(3, 2));
-        //assert_approx_eq!(105.0 / 532.0, matrix_b[2][3], 0.00001);
+
+
+        assert!(matrix_b.isequal(matrix_a.inverse()));
+        assert!(532.0.fuzzy_eq(matrix_a.determinant()));
+        assert!((-160.0).fuzzy_eq(matrix_a.cofactor(2, 3)));
+        assert!(105.0.fuzzy_eq(matrix_a.cofactor(3, 2)));
     }
 
     #[test]

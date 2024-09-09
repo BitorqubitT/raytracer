@@ -720,6 +720,21 @@ mod tests {
     }
 
     #[test]
+    fn calculate_determinant_of_non_inv_4x4(){
+       let matrix_values_a = vec![
+            vec![-4.0, 2.0, -2.0, -3.0],
+            vec![9.0, 6.0, 2.0, 6.0],
+            vec![0.0, -5.0, 1.0, -5.0],
+            vec![0.0, 0.0, 0.0, 0.0],
+        ];
+        
+        let matrix_a = Matrix::new(4, 4, matrix_values_a);
+       
+        assert!(0.0 == matrix_a.determinant());
+    
+    }
+
+    #[test]
     fn calculate_inverse(){
        let matrix_values_a = vec![
             vec![-5.0, 2.0, 6.0, -8.0],
@@ -735,24 +750,56 @@ mod tests {
             vec![-0.52256, -0.81391, -0.30075, 0.30639],
         ];
 
+       let matrix_values_c = vec![
+            vec![8.0, -5.0, 9.0, 2.0],
+            vec![7.0, 5.0, 6.0, 1.0],
+            vec![-6.0, 0.0, 9.0, 6.0],
+            vec![-3.0, 0.0, -9.0, -4.0],
+        ];
+
+       let matrix_values_d = vec![
+            vec![-0.15385, -0.15385, -0.28205, -0.53846],
+            vec![-0.07692, 0.12308, 0.02564, 0.03077],
+            vec![0.35897, 0.35897, 0.43590, 0.92308],
+            vec![-0.69231, -0.69231, -0.76923, -1.92308],
+        ];
+
+       let matrix_values_e = vec![
+            vec![9.0, 3.0, 0.0, 9.0],
+            vec![-5.0, -2.0, -6.0, -3.0],
+            vec![-4.0, 9.0, 6.0, 4.0],
+            vec![-7.0, 6.0, 6.0, 2.0],
+        ];
+
+       let matrix_values_f = vec![
+            vec![-0.04074, -0.07778, 0.14444, -0.22222],
+            vec![-0.07778, 0.03333, 0.36667, -0.33333],
+            vec![-0.02901, -0.14630, -0.10926, 0.12963],
+            vec![0.17778, 0.06667, -0.26667, 0.33333],
+        ];
+        
         let matrix_a = Matrix::new(4, 4, matrix_values_a);
         let matrix_b = Matrix::new(4, 4, matrix_values_b);
+        let matrix_c = Matrix::new(4, 4, matrix_values_c);
+        let matrix_d = Matrix::new(4, 4, matrix_values_d);
+        let matrix_e = Matrix::new(4, 4, matrix_values_e);
+        let matrix_f = Matrix::new(4, 4, matrix_values_f);
 
-        println!("{:?}", matrix_a.inverse());
-        println!("{:?}", matrix_b);
-
-        // might need to implement sub for matrix.
-        // this is how assert_approx calcs the difference i guess.
-        // Should fix this test, but can also use a dumb one and the if the resulting matrix is zero.
-        // Still have the problem with rounding.
-
-
-
+        // TODO:
+        // Should check the strictness of fuzzy_eq in isequal 
         assert!(matrix_b.isequal(matrix_a.inverse()));
         assert!(532.0.fuzzy_eq(matrix_a.determinant()));
         assert!((-160.0).fuzzy_eq(matrix_a.cofactor(2, 3)));
         assert!(105.0.fuzzy_eq(matrix_a.cofactor(3, 2)));
+        assert!(matrix_d.isequal(matrix_c.inverse()));
+        assert!(matrix_f.isequal(matrix_e.inverse()));
     }
+
+    #[test]
+    fn multiply_product_by_its_inverse(){
+        //TODO: test page 41
+    }
+
 
     #[test]
     fn translation(){

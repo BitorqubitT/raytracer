@@ -43,6 +43,23 @@ impl Matrix {
         }
     }
 
+    pub fn translation(x: f64, y: f64, z: f64) -> Matrix {
+
+       let matrix_values = vec![
+            vec![1.0, 0.0, 0.0, x],
+            vec![0.0, 1.0, 0.0, y],
+            vec![0.0, 0.0, 1.0, z],
+            vec![0.0, 0.0, 0.0, 1.0],
+        ];
+
+        let matrix_a = Matrix::new(4, 4, matrix_values);
+
+        return matrix_a
+    }
+
+
+
+
     pub fn display(&self) {
         for row in &self.data {
             println!("{:?}", row);
@@ -313,6 +330,8 @@ impl checkifsame for Matrix {
 
 #[cfg(test)]
 mod tests {
+
+    use nalgebra::Transform;
 
     use super::*;
 
@@ -798,11 +817,31 @@ mod tests {
     #[test]
     fn multiply_product_by_its_inverse(){
         //TODO: test page 41
+
+        
     }
 
 
     #[test]
     fn translation(){
+        let transform_a = Matrix::translation(5.0, -3.0, 2.0);
+        let point_p = Tuple::point(-3.0, 4.0, 5.0);
+        let point_b = Tuple::point(2.0, 1.0, 7.0);
+        assert!(transform_a * point_p == point_b);
+
+    }
+
+    #[test]
+    fn multiply_by_inverse_translation(){
+        let transform_a = Matrix::translation(5.0, -3.0, 2.0);
+        let inverse_a = transform_a.inverse();
+        let point_p = Tuple::point(-3.0, 4.0, 5.0);
+        let point_b = Tuple::point(-8.0, 7.0, 3.0);
+        assert!(inverse_a * point_p == point_b);
+    }
+
+    fn translation_doesnt_affect_vectors(){
+
 
 
     }

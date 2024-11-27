@@ -57,9 +57,6 @@ impl Matrix {
         return matrix_a
     }
 
-
-
-
     pub fn display(&self) {
         for row in &self.data {
             println!("{:?}", row);
@@ -308,6 +305,8 @@ impl Sub for Matrix {
     }
 }
 
+
+//TODO: do we still need this?
 /*
 // Fix this and replace the isequal function
 impl checkifsame for Matrix {
@@ -515,7 +514,6 @@ mod tests {
 
 
     #[test]
-    // Test works, check if this is still the right implementation in the future
     fn multiply_matrix_by_tuple(){
        
         let matrix_values_a = vec![
@@ -817,10 +815,8 @@ mod tests {
     #[test]
     fn multiply_product_by_its_inverse(){
         //TODO: test page 41
-
         
     }
-
 
     #[test]
     fn translation(){

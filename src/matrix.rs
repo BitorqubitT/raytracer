@@ -330,6 +330,8 @@ impl checkifsame for Matrix {
 #[cfg(test)]
 mod tests {
 
+    use std::vec;
+
     use nalgebra::Transform;
 
     use super::*;
@@ -836,13 +838,30 @@ mod tests {
         assert!(inverse_a * point_p == point_b);
     }
 
+    #[test]
     fn translation_doesnt_affect_vectors(){
-
-
-
+        let transform_a = Matrix::translation(5.0, -3.0, 2.0);
+        let vector_v = Tuple::vector(-3.0, 4.0, 5.0);
+        // Implemented matrix as vec[vec] and we implemented Mul for vector.
+        let transform_b = transform_a * vector_v;
+        assert!(transform_b == vector_v);
     }
 
+    #[test]
+    fn scaling_matrix_applied_to_point(){
+        let transform_a = Matrix::scaling();
+        let point_a = Tuple::point(-4.0, 6.0, 8.0);
+    }
 
+    #[test]
+    fn scaling_matrix_applied_to_vector(){
+//page46
+    }
+    
+    #[test]
+    fn multiply_by_inverse_of_scaling_matrix(){
+
+    }
 //add the last two tests for inverse of matrixyy
 
 }

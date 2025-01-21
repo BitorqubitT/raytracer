@@ -851,16 +851,30 @@ mod tests {
     fn scaling_matrix_applied_to_point(){
         let transform_a = Matrix::scaling();
         let point_a = Tuple::point(-4.0, 6.0, 8.0);
+        let point_b = Tuple::point(-8.0, 18.0, 32.0);
+        let transformed_p = transform_a * point_a;
+        assert!(tranform_p == point_b);
     }
 
     #[test]
     fn scaling_matrix_applied_to_vector(){
 //page46
+        let transform_a = Matrix::scaling();
+        let vector_a = Tuple::vector(-4.0, 6.0, 8.0);
+        let vector_b = Tuple::vector(-8.0, 18.0, 32.0);
+        let transformed_vector = transform_a * vector_b;
+        assert!(tranform_vector == vector_b);
     }
     
     #[test]
     fn multiply_by_inverse_of_scaling_matrix(){
-
+        let transform_a = Matrix::scaling();
+        // SOMETHING LIKE THIS
+        let inverse_a = tranform_a.inverse();
+        let vector_a = Tuple::vector(-4.0, 6.0, 8.0);
+        let inversed_vector = inverse_a * vector_a;
+        assert!(inversed_vector == vector_a);
+        
     }
 //add the last two tests for inverse of matrixyy
 

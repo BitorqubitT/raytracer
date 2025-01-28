@@ -203,6 +203,21 @@ impl Matrix {
         true
     }
 
+
+    pub fn scaling(x: f64, y: f64, z: f64) -> Matrix {
+
+        let matrix_values = vec![
+            vec![x, 0.0, 0.0, 0.0],
+            vec![0.0, y, 0.0, 0.0],
+            vec![0.0, 0.0, z, 0.0],
+            vec![0.0, 0.0, 0.0, 1.0],
+        ];
+
+        let matrix_a = Matrix::new(4, 4, matrix_values);
+        return matrix_a 
+    }
+
+
 }
 
 
@@ -849,33 +864,42 @@ mod tests {
 
     #[test]
     fn scaling_matrix_applied_to_point(){
-        let transform_a = Matrix::scaling();
+        let transform_a = Matrix::scaling(2.0, 3.0, 4.0);
         let point_a = Tuple::point(-4.0, 6.0, 8.0);
         let point_b = Tuple::point(-8.0, 18.0, 32.0);
         let transformed_p = transform_a * point_a;
-        assert!(tranform_p == point_b);
+        assert!(transformed_p == point_b);
     }
 
     #[test]
     fn scaling_matrix_applied_to_vector(){
-//page46
-        let transform_a = Matrix::scaling();
+        let transform_a = Matrix::scaling(2.0, 3.0, 4.0);
         let vector_a = Tuple::vector(-4.0, 6.0, 8.0);
         let vector_b = Tuple::vector(-8.0, 18.0, 32.0);
-        let transformed_vector = transform_a * vector_b;
-        assert!(tranform_vector == vector_b);
+        let transformed_vector = transform_a * vector_a;
+        assert!(transformed_vector == vector_b);
     }
     
     #[test]
     fn multiply_by_inverse_of_scaling_matrix(){
-        let transform_a = Matrix::scaling();
+        let transform_a = Matrix::scaling(2.0, 3.0, 4.0);
         // SOMETHING LIKE THIS
-        let inverse_a = tranform_a.inverse();
+        let inverse_a = transform_a.inverse();
         let vector_a = Tuple::vector(-4.0, 6.0, 8.0);
         let inversed_vector = inverse_a * vector_a;
-        assert!(inversed_vector == vector_a);
-        
+        let vector_b = Tuple::vector(-2.0, 2.0, 2.0);
+        assert!(inversed_vector == vector_b);
     }
-//add the last two tests for inverse of matrixyy
+
+    #[test]
+    fn reflection_scaling(){
+        let transform_a = Matrix::scaling(-1.0, 1.0, 1.0);
+        let point_a = Tuple::point(2.0, 3.0, 4.0);
+        let reflected_point = transform_a * point_a;
+        let point_b = Tuple::point(-2.0, 3.0, 4.0);
+        assert!(reflected_point == point_b);
+    }
+
+    // Rotationonnnnnnnn
 
 }

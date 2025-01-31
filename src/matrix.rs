@@ -61,7 +61,7 @@ impl Matrix {
         for row in &self.data {
             println!("{:?}", row);
         }
-   } 
+    } 
 
    // When transposing, do we want to keep the old one aswell?
    // I loop, but I can also hardcode it per n*m, this would be faster.
@@ -103,14 +103,14 @@ impl Matrix {
 
     // Remove this code if I dont end up using approx eq
     pub fn abs(&self) -> Matrix {
-            let mut abs_matrix = self.clone(); // Make a copy of the matrix
-            
-            for row in &mut abs_matrix.data {
-                for element in row {
-                    *element = element.abs(); // Compute the absolute value
-                }
+        let mut abs_matrix = self.clone(); // Make a copy of the matrix
+        
+        for row in &mut abs_matrix.data {
+            for element in row {
+                *element = element.abs(); // Compute the absolute value
             }
-            abs_matrix // Return the modified matrix
+        }
+        abs_matrix // Return the modified matrix
     }
 
    pub fn submatrix(&self, row: usize, column: usize) -> Self {
@@ -203,7 +203,6 @@ impl Matrix {
         true
     }
 
-
     pub fn scaling(x: f64, y: f64, z: f64) -> Matrix {
 
         let matrix_values = vec![
@@ -217,6 +216,18 @@ impl Matrix {
         return matrix_a 
     }
 
+    pub fn rotation_x(r) -> Matrix {
+        
+        let matrix_values = vec![
+            vec![1.0, 0.0, 0.0, 0.0],
+            vec![0.0, cos r, -sin r, 0.0],
+            vec![0.0, sin r, cos r, 0.0],
+            vec![0.0, 0.0, 0.0, 1.0],
+        ];
+        
+        let matrix_a = Matrix::new(4, 4, matrix_values);
+
+    }
 
 }
 
@@ -346,9 +357,7 @@ impl checkifsame for Matrix {
 mod tests {
 
     use std::vec;
-
     use nalgebra::Transform;
-
     use super::*;
 
     #[test]
@@ -900,6 +909,19 @@ mod tests {
         assert!(reflected_point == point_b);
     }
 
-    // Rotationonnnnnnnn
+    // Rotationonnnnnnnn page 49
+
+    fn rotate_point(){
+        let point_a= Tuple::point(0.0, 1.0, 0.0);
+        let half_quarter = rotation_x(pi / 4.0);                 
+        let full_quarter = rotation_x(pi / 2.0);
+        // add squared
+        let point_b= Tuple::point(0.0, 2.0/2.0, 2.0/2.0);
+        let point_c= Tuple::point(0.0, 0.0, 1.0);
+        assert!(half_quarter * point_a == point_b);                 
+        assert!(full_quarter * point_a == point_c);                 
+
+
+    }
 
 }

@@ -2,7 +2,9 @@ use std::ops::{Index, IndexMut, Mul, Sub, };
 use std::cmp::PartialEq;
 use crate::tuple::Tuple;
 use crate::approx_eq::*;
-
+use std::f64::consts::PI;
+use std::f64::consts::SQRT_2;
+use std::fmt;
 // Page 44
 
 // TODO
@@ -216,17 +218,20 @@ impl Matrix {
         return matrix_a 
     }
 
-    pub fn rotation_x(r) -> Matrix {
+    pub fn rotation_x(r: f64) -> Matrix {
+
+        let cos_r = r.cos();
+        let sin_r = r.sin();
         
         let matrix_values = vec![
             vec![1.0, 0.0, 0.0, 0.0],
-            vec![0.0, cos r, -sin r, 0.0],
-            vec![0.0, sin r, cos r, 0.0],
+            vec![0.0, cos_r, -sin_r, 0.0],
+            vec![0.0, sin_r, cos_r, 0.0],
             vec![0.0, 0.0, 0.0, 1.0],
         ];
         
         let matrix_a = Matrix::new(4, 4, matrix_values);
-
+        return  matrix_a;
     }
 
 }
@@ -328,6 +333,12 @@ impl Sub for Matrix {
             }
         }
     return result
+    }
+}
+
+impl fmt::Display for Tuple {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "({}, {}, {})", self.x, self.y, self.z)
     }
 }
 
@@ -910,18 +921,38 @@ mod tests {
     }
 
     // Rotationonnnnnnnn page 49
-
+    #[test]
     fn rotate_point(){
-        let point_a= Tuple::point(0.0, 1.0, 0.0);
-        let half_quarter = rotation_x(pi / 4.0);                 
-        let full_quarter = rotation_x(pi / 2.0);
+        let point_a = Tuple::point(0.0, 1.0, 0.0);
+        let half_quarter = Matrix::rotation_x(PI / 4.0);                 
+        let full_quarter = Matrix::rotation_x(PI / 2.0);
         // add squared
-        let point_b= Tuple::point(0.0, 2.0/2.0, 2.0/2.0);
-        let point_c= Tuple::point(0.0, 0.0, 1.0);
+        let point_b = Tuple::point(0.0, SQRT_2 / 2.0, SQRT_2 / 2.0);
+        let point_c = Tuple::point(0.0, 0.0, 1.0);
+        let g = full_quarter * point_a;
         assert!(half_quarter * point_a == point_b);                 
-        assert!(full_quarter * point_a == point_c);                 
+        assert!((g).fuzzy_eq(point_c));    
+    }
+
+    #[test]
+    fn inverse_of_x_rotation(){
 
 
     }
+
+    #[test]
+    fn rotate_around_y_axis(){
+
+
+
+    }
+
+    #[test]
+    fn rotate_around_x_axis(){
+
+
+
+    }
+
 
 }

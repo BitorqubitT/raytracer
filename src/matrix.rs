@@ -234,6 +234,24 @@ impl Matrix {
         return  matrix_a;
     }
 
+    pub fn rotation_y(r: f64) -> Matrix {
+
+        let cos_r = r.cos();
+        let sin_r = r.sin();
+        
+        let matrix_values = vec![
+            vec![cos_r, 0.0, sin_r, 0.0],
+            vec![0.0, 1.0, 0.0, 0.0],
+            vec![-sin_r, 0.0, cos_r, 0.0],
+            vec![0.0, 0.0, 0.0, 1.0],
+        ];
+        
+        let matrix_a = Matrix::new(4, 4, matrix_values);
+        return  matrix_a;
+    }
+
+
+
 }
 
 
@@ -922,11 +940,10 @@ mod tests {
 
     // Rotationonnnnnnnn page 49
     #[test]
-    fn rotate_point(){
+    fn rotate_around_x_axis(){
         let point_a = Tuple::point(0.0, 1.0, 0.0);
         let half_quarter = Matrix::rotation_x(PI / 4.0);                 
         let full_quarter = Matrix::rotation_x(PI / 2.0);
-        // add squared
         let point_b = Tuple::point(0.0, SQRT_2 / 2.0, SQRT_2 / 2.0);
         let point_c = Tuple::point(0.0, 0.0, 1.0);
         let g = full_quarter * point_a;
@@ -936,19 +953,32 @@ mod tests {
 
     #[test]
     fn inverse_of_x_rotation(){
-
-
+        let point_a = Tuple::point(0.0, 1.0, 0.0);
+        let half_quarter = Matrix::rotation_x(PI / 4.0);
+        let invere_half_quarter = Matrix::inverse(&half_quarter);
+        let inverse_point_a = invere_half_quarter * point_a;
+        let inverse_point_b = Tuple::point(0.0, SQRT_2 / 2.0, -SQRT_2 / 2.0);
+        assert!((inverse_point_a).fuzzy_eq(inverse_point_b))
     }
 
     #[test]
     fn rotate_around_y_axis(){
-
-
+        let point_a = Tuple::point(0.0, 0.0, 1.0);
+        let half_quarter = Matrix::rotation_y(PI / 4.0);                 
+        let full_quarter = Matrix::rotation_y(PI / 2.0);
+        let point_b = Tuple::point(SQRT_2 / 2.0, 0.0, SQRT_2 / 2.0);
+        let point_c = Tuple::point(1.0, 0.0, 0.0);
+        let half_quarter_a = half_quarter * point_a;
+        let full_quarter_a = full_quarter * point_a;
+        println!("{}", half_quarter_a);
+        println!("{}", half_quarter_a);
+        assert!((half_quarter_a).fuzzy_eq(point_b)); 
+        assert!((full_quarter_a).fuzzy_eq(point_c)); 
 
     }
 
     #[test]
-    fn rotate_around_x_axis(){
+    fn rotate_around_z_axis(){
 
 
 

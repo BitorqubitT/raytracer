@@ -5,4 +5,4 @@
 pub mod tuple;
 pub mod canvas;
 pub mod matrix;
-mod approx_eq;
+pub mod approx_eq;

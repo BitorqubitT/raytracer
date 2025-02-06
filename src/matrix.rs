@@ -263,8 +263,22 @@ impl Matrix {
         ];
         
         let matrix_a = Matrix::new(4, 4, matrix_values);
-        return  matrix_a;
+        return matrix_a;
     }
+
+    pub fn shearing(xy: f64, xz: f64, yx: f64, yz: f64, zx: f64, zy: f64) -> Matrix {
+
+        let matrix_values = vec![
+            vec![1.0, xy, xz, 0.0],
+            vec![yx, 1.0, yz, 0.0],
+            vec![zx, zy, 1.0, 0.0],
+            vec![0.0, 0.0, 0.0, 1.0]
+        ];
+
+        let matrix_a = Matrix::new(4, 4, matrix_values);
+        return matrix_a;
+    }
+
 
 }
 
@@ -999,6 +1013,60 @@ mod tests {
         let full_quarter_a = full_quarter * point_a;
         assert!((half_quarter_a).fuzzy_eq(point_b)); 
         assert!((full_quarter_a).fuzzy_eq(point_c)); 
+    }
+
+    #[test]
+    fn shearing_transformation_x_y(){
+        let transform_a = Matrix::shearing(1.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+        let point_a = Tuple::point(2.0, 3.0, 4.0);
+        let point_b = Tuple::point(5.0, 3.0, 4.0);
+        let transformed_point = transform_a * point_a;
+        assert!((transformed_point).fuzzy_eq(point_b));
+    }
+
+    #[test]
+    fn shearing_transformation_x_z(){
+        let transform_a = Matrix::shearing(0.0, 1.0, 0.0, 0.0, 0.0, 0.0);
+        let point_a = Tuple::point(2.0, 3.0, 4.0);
+        let point_b = Tuple::point(6.0, 3.0, 4.0);
+        let transformed_point = transform_a * point_a;
+        assert!((transformed_point).fuzzy_eq(point_b));
+    }
+
+    #[test]
+    fn shearing_transformation_y_x(){
+        let transform_a = Matrix::shearing(0.0, 0.0, 1.0, 0.0, 0.0, 0.0);
+        let point_a = Tuple::point(2.0, 3.0, 4.0);
+        let point_b = Tuple::point(2.0, 5.0, 4.0);
+        let transformed_point = transform_a * point_a;
+        assert!((transformed_point).fuzzy_eq(point_b));
+    }
+
+    #[test]
+    fn shearing_transformation_y_z(){
+        let transform_a = Matrix::shearing(0.0, 0.0, 0.0, 1.0, 0.0, 0.0);
+        let point_a = Tuple::point(2.0, 3.0, 4.0);
+        let point_b = Tuple::point(2.0, 7.0, 4.0);
+        let transformed_point = transform_a * point_a;
+        assert!((transformed_point).fuzzy_eq(point_b));
+    }
+
+    #[test]
+    fn shearing_transformation_z_x(){
+        let transform_a = Matrix::shearing(0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+        let point_a = Tuple::point(2.0, 3.0, 4.0);
+        let point_b = Tuple::point(2.0, 3.0, 6.0);
+        let transformed_point = transform_a * point_a;
+        assert!((transformed_point).fuzzy_eq(point_b));
+    }
+
+    #[test]
+    fn shearing_transformation_z_y(){
+        let transform_a = Matrix::shearing(0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+        let point_a = Tuple::point(2.0, 3.0, 4.0);
+        let point_b = Tuple::point(2.0, 3.0, 7.0);
+        let transformed_point = transform_a * point_a;
+        assert!((transformed_point).fuzzy_eq(point_b));
     }
 
 

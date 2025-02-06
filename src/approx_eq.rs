@@ -1,5 +1,4 @@
 use std::f64;
-
 use crate::tuple::Tuple;
 
 // Use this to check if certain numbers are equal up to x decimal points.

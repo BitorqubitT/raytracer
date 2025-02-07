@@ -2,6 +2,7 @@ extern crate raytracer;
 use raytracer::matrix::*;
 use raytracer::tuple::*;
 use std::f64::consts::PI;
+use raytracer::canvas::*;
 use crate::raytracer::approx_eq::ApproxEq;
 fn main(){
 
@@ -32,13 +33,21 @@ fn main(){
 
 
     // draw a clock
+    let mid_point = Tuple::point(50.0, 50.0, 0.0);
+
+    // create loop that keeps rotating mid_point
+    // and write to canvas
 
     // create canvas
+    // Maybe give to ppm an extra var -> file_name 
+    let mut new_canvas = Canvas::new(100, 100);
+    let rainbow = Color::new(1.0, 0.0, 0.0);
+    
 
-    // point at origin -> 
+    new_canvas.write_pixel(mid_point.x, mid_point.y, rainbow);
 
+    let _canvas = new_canvas.canvas_to_ppm();
 
-
-
-
+    //TODO: REWRITE canvas so it works with float instead of usize
+    // page 56
 }

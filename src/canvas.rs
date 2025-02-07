@@ -187,7 +187,8 @@ impl Canvas{
         println!("{}", header);
         // Use as_bytes() to write variable to file instead of just a string
         // Change location
-        let mut f = File::create("foo.ppm").expect("Unable to create file");
+        //TODO: Make filename a param
+        let mut f = File::create("ch_2.ppm").expect("Unable to create file");
         f.write_all(header.as_bytes()).expect("Unable to write data");
 
         return header;        

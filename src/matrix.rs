@@ -388,7 +388,6 @@ impl fmt::Display for Tuple {
     }
 }
 
-
 //TODO: do we still need this?
 /*
 // Fix this and replace the isequal function
@@ -408,7 +407,6 @@ impl checkifsame for Matrix {
     }
 }
 */
-
 
 #[cfg(test)]
 mod tests {

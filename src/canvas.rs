@@ -4,15 +4,12 @@ use std::fs::File;
 use std::io::Write;
 
 // TODO
-// Continue page 25
-// Check if the "matrix" that I have is logical.
-// Can use cargo test canvas -- --nocapture
-// This shows prints
+// Let canvas write pixel function take in f64 instead of usize
+// Maybe convert type.
+
 
 // Questions:
 // Think about stack vs heap and thus the use of &.
-// Am I using & in the right way.
-// Check this
 
 #[derive(Debug, Copy, Clone)]
 pub struct Color {

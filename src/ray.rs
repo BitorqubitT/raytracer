@@ -3,7 +3,7 @@ use crate::tuple::Tuple;
 pub struct Ray {
     pub origin: Tuple,
     pub direction: Tuple,
-    }
+}
 
 impl Ray {
 
@@ -21,8 +21,6 @@ impl Ray {
         return new_position
 
     }
-
-
 
 }
 
@@ -56,9 +54,6 @@ mod tests {
         assert!(new_ray.position(-1.0) == Tuple::point(1.0, 3.0, 4.0));
         assert!(new_ray.position(2.5) == Tuple::point(4.5, 3.0, 4.0));
 
-
-
     }
-
 
 }

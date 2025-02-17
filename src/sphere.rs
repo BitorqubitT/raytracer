@@ -4,6 +4,7 @@ use crate::matrix::*;
 use crate::tuple::*;
 use std::ops::{Index, IndexMut, Mul, Sub, };
 
+#[derive(Debug)]
 pub struct Sphere{
  // somethign
 
@@ -38,9 +39,6 @@ impl Sphere{
         }
     }
 }
-
-
-
 
 #[cfg(test)]
 mod tests {
@@ -107,12 +105,6 @@ mod tests {
         assert!(xs[0].0 == -6.0);
         assert!(xs[0].1 == -4.0);
     }
-
-
-
-
-
-
 
 }
 

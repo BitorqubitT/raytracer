@@ -1,5 +1,7 @@
 #[macro_use]
 use crate::sphere::Sphere;
+use crate::ray::*;
+use crate::tuple::*;
 
 #[derive(Debug)]
 pub struct Intersection{
@@ -72,8 +74,15 @@ mod tests {
         assert!(xs.objects[1].t == 2.0);
     }
 
-    // SHOULD I USE MACRO??????? or give a vector to the struct
+    #[test]
+    fn intersect_object_on_intersectoin(){
+        let r = Ray::new(Tuple::point(0.0, 0.0, -5.0), Tuple::vector(0.0, 0.0, 1.0));
+        let sphere_a = Sphere::new();
+        let xs = sphere_a.intersect(r);
+        assert!(xs.len() == 2);
+        assert(xs.object)
 
+    }
 
 
 

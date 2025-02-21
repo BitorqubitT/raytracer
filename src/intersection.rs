@@ -1,6 +1,5 @@
 #[macro_use]
 use crate::sphere::Sphere;
-extern crate macro_rules_attribute;
 
 #[derive(Debug)]
 pub struct Intersection{
@@ -20,28 +19,28 @@ impl Intersection {
 
 }
 
-pub struct Intersections<T> {
-    pub objects: Vec<T>,
+pub struct Intersections {
+    pub objects: Vec<Intersection>,
 
 }
 
 impl Intersections {
 
-    pub fn new(objects: Vec<T>) -> Self {
+    pub fn new(objects: Vec<Intersection>) -> Self {
+        
         Intersections {
-            objects,
+            objects: objects,
         }
-    } 
+    }
+
+    pub fn count(&self) -> usize {
+
+        return self.objects.len();
+
+    }
+
 
 }
-
-#[macro_export]
-macro_rules! create_intersections {
-    ($($x:expr),*) => {
-        Intersections::new(vec![$($x),*])
-    };
-
-
 
 #[cfg(test)]
 mod tests {
@@ -62,15 +61,18 @@ mod tests {
     #[test]
     fn aggregating_intersections(){
         let sphere_a = Sphere::new();
+        let sphere_b = Sphere::new();
         let new_intersection_1 = Intersection::new(1.0, sphere_a);
-        let new_intersection_2 = Intersection::new(2.0, sphere_a);
+        let new_intersection_2 = Intersection::new(2.0, sphere_b);
         //TODO: do we write this as implemn
-        let xs = Intersections::new(new_intersection_1, new_intersection_2);
-        assert!(xs.len() == 2);
-        assert!(xs[0].t == 1);
-        assert!(xs[1].t == 2);
+        let xs = Intersections::new(vec![new_intersection_1, new_intersection_2]);
+        //assert!(xs.objects.len() == 2);
+        assert!(xs.count() == 2);
+        assert!(xs.objects[0].t == 1.0);
+        assert!(xs.objects[1].t == 2.0);
     }
 
+    // SHOULD I USE MACRO??????? or give a vector to the struct
 
 
 

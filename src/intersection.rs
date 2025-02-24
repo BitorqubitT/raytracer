@@ -75,7 +75,8 @@ mod tests {
     }
 
     #[test]
-    fn intersect_object_on_intersectoin(){
+    fn intersect_object_on_intersection(){
+        // page 64
         let r = Ray::new(Tuple::point(0.0, 0.0, -5.0), Tuple::vector(0.0, 0.0, 1.0));
         let sphere_a = Sphere::new();
         let xs = sphere_a.intersect(r);

@@ -2,9 +2,10 @@ use std::mem::Discriminant;
 use crate::ray::*;
 use crate::matrix::*;
 use crate::tuple::*;
+use crate::intersection::*;
 use std::ops::{Index, IndexMut, Mul, Sub, };
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Sphere{
  // somethign
 
@@ -35,6 +36,11 @@ impl Sphere{
         } else {
             let t1 = (-b - discriminant.sqrt()) / (2.0 * a);
             let t2 = (-b + discriminant.sqrt()) / (2.0 * a);
+            // Pretty sure we want to return an intersection here
+            // page 65
+            let intersect_1 = Intersection::new(t1, self);
+            let intersect_2 = Intersection::new(t2, self);
+            return vec![(intersect_1, intersect_2)];
             return vec![(t1, t2)]
         }
     }

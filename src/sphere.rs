@@ -5,7 +5,7 @@ use crate::tuple::*;
 use crate::intersection::*;
 use std::ops::{Index, IndexMut, Mul, Sub, };
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy)]
 pub struct Sphere{
  // somethign
 
@@ -23,7 +23,7 @@ impl Sphere{
     // BUt also dot(vecone, vectwo);
     // Checkl this
     // Might need to move this function to other struct
-    pub fn intersect(&self, ray: Ray) -> Vec<(f64, f64)> {
+    pub fn intersect(&self, ray: Ray) -> Vec<Intersection> {
 
         let sphere_to_ray = ray.origin - Tuple::point(0.0, 0.0, 0.0);
 
@@ -38,10 +38,9 @@ impl Sphere{
             let t2 = (-b + discriminant.sqrt()) / (2.0 * a);
             // Pretty sure we want to return an intersection here
             // page 65
-            let intersect_1 = Intersection::new(t1, self);
-            let intersect_2 = Intersection::new(t2, self);
-            return vec![(intersect_1, intersect_2)];
-            return vec![(t1, t2)]
+            let intersect_1 = Intersection::new(t1, *self);
+            let intersect_2 = Intersection::new(t2, *self);
+            return vec![intersect_1, intersect_2];
         }
     }
 }
@@ -60,10 +59,27 @@ mod tests {
         let ray_a = Ray::new(point_a, vector_a);
         let xs = sphere_a.intersect(ray_a);
         // Clean this up.
-        assert!(xs.len() == 1);
-        assert!(xs[0].0 == 4.0);
-        assert!(xs[0].1 == 6.0);
+        assert!(xs.len() == 2);
+        println!("{:?}", xs[0]);
+        assert!(xs[0].t == 4.0);
+        assert!(xs[1].t == 6.0);
     }
+
+    #[test]
+    fn ray_intersect_sphere_object_property(){
+        let point_a = Tuple::point(0.0, 0.0, -5.0);
+        let vector_a = Tuple::vector(0.0, 0.0, 1.0);
+        let sphere_a = Sphere::new();
+        let ray_a = Ray::new(point_a, vector_a);
+        let xs = sphere_a.intersect(ray_a);
+        // Clean this up.
+        assert!(xs.len() == 2);
+        println!("{:?}", xs[0]);
+        // TODO:  implement this with partialEQ
+        assert!(xs[0].object == sphere_a);
+        assert!(xs[1].object == sphere_a);
+    }
+
 
     #[test]
     fn ray_intersect_sphere_at_tangent(){
@@ -73,9 +89,9 @@ mod tests {
         let ray_a = Ray::new(point_a, vector_a);
         let xs = sphere_a.intersect(ray_a);
         // Clean this up.
-        assert!(xs.len() == 1);
-        assert!(xs[0].0 == 5.0);
-        assert!(xs[0].1 == 5.0);
+        assert!(xs.len() == 2);
+        assert!(xs[0].t == 5.0);
+        assert!(xs[1].t == 5.0);
     }
 
     #[test]
@@ -95,9 +111,9 @@ mod tests {
         let sphere_a = Sphere::new();
         let ray_a = Ray::new(point_a, vector_a);
         let xs = sphere_a.intersect(ray_a);
-        assert!(xs.len() == 1);
-        assert!(xs[0].0 == -1.0);
-        assert!(xs[0].1 == 1.0);
+        assert!(xs.len() == 2);
+        assert!(xs[0].t == -1.0);
+        assert!(xs[1].t == 1.0);
     }
 
     #[test]
@@ -107,9 +123,9 @@ mod tests {
         let sphere_a = Sphere::new();
         let ray_a = Ray::new(point_a, vector_a);
         let xs = sphere_a.intersect(ray_a);
-        assert!(xs.len() == 1);
-        assert!(xs[0].0 == -6.0);
-        assert!(xs[0].1 == -4.0);
+        assert!(xs.len() == 2);
+        assert!(xs[0].t == -6.0);
+        assert!(xs[1].t == -4.0);
     }
 
 }

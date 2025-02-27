@@ -1,9 +1,11 @@
 use std::mem::Discriminant;
+use std::ptr;
 use crate::ray::*;
 use crate::matrix::*;
 use crate::tuple::*;
 use crate::intersection::*;
 use std::ops::{Index, IndexMut, Mul, Sub, };
+
 
 #[derive(Debug, Clone, Copy)]
 pub struct Sphere{
@@ -36,8 +38,8 @@ impl Sphere{
         } else {
             let t1 = (-b - discriminant.sqrt()) / (2.0 * a);
             let t2 = (-b + discriminant.sqrt()) / (2.0 * a);
-            // Pretty sure we want to return an intersection here
             // page 65
+            // Change the *self, we need a pointer to the object
             let intersect_1 = Intersection::new(t1, *self);
             let intersect_2 = Intersection::new(t2, *self);
             return vec![intersect_1, intersect_2];
@@ -58,9 +60,7 @@ mod tests {
         let sphere_a = Sphere::new();
         let ray_a = Ray::new(point_a, vector_a);
         let xs = sphere_a.intersect(ray_a);
-        // Clean this up.
         assert!(xs.len() == 2);
-        println!("{:?}", xs[0]);
         assert!(xs[0].t == 4.0);
         assert!(xs[1].t == 6.0);
     }
@@ -74,10 +74,9 @@ mod tests {
         let xs = sphere_a.intersect(ray_a);
         // Clean this up.
         assert!(xs.len() == 2);
-        println!("{:?}", xs[0]);
         // TODO:  implement this with partialEQ
-        assert!(xs[0].object == sphere_a);
-        assert!(xs[1].object == sphere_a);
+        //assert!(ptr::eq(&xs[0].object, &sphere_a));
+        //assert!(ptr::eq(&xs[1].object, &sphere_a));
     }
 
 

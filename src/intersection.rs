@@ -29,6 +29,8 @@ pub struct Intersections {
 impl Intersections {
 
     pub fn new(objects: Vec<Intersection>) -> Self {
+
+        // SORT THE INTERSECTIONS HERE ALREADY
         
         Intersections {
             objects: objects,
@@ -38,6 +40,16 @@ impl Intersections {
     pub fn count(&self) -> usize {
 
         return self.objects.len();
+
+    }
+
+    pub fn hit(&self) -> Intersection{
+
+        for i in &self{
+            i.t
+
+        }
+
 
     }
 
@@ -73,5 +85,14 @@ mod tests {
         assert!(xs.objects[0].t == 1.0);
         assert!(xs.objects[1].t == 2.0);
     }
+
+    fn hit_with_all_positive_intersections(){
+        let sphere_a = Sphere::new();
+        let intersection_1 = Intersection::new(1.0, sphere_a);
+        let intersection_2 = Intersection::new(2.0, sphere_a);
+        let xs = Intersections::new(vec![intersection_2, intersection_1]);
+
+    }
+
 
 }

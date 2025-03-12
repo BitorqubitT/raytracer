@@ -29,7 +29,7 @@ pub struct Intersections {
 impl Intersections {
 
     pub fn new(objects: Vec<Intersection>) -> Self {
-
+        objects.sort_unstable_by(|a, b| a.t.partial_cmp(&b.t).unwrap_or(Ordering::Equal));
         // SORT THE INTERSECTIONS HERE ALREADY
         
         Intersections {
@@ -46,10 +46,13 @@ impl Intersections {
     pub fn hit(&self) -> Intersection{
 
         for i in &self{
-            i.t
+            if i.t >= 0.0 {
+                return i;
+            }
 
         }
-
+    
+        return None;
 
     }
 
@@ -86,13 +89,47 @@ mod tests {
         assert!(xs.objects[1].t == 2.0);
     }
 
+    #[test]
     fn hit_with_all_positive_intersections(){
         let sphere_a = Sphere::new();
         let intersection_1 = Intersection::new(1.0, sphere_a);
         let intersection_2 = Intersection::new(2.0, sphere_a);
         let xs = Intersections::new(vec![intersection_2, intersection_1]);
-
+        let i = xs.hit();
+        assert!(i.t == 1.0);
     }
 
+    #[test]
+    fn hit_with_some_negative_intersections(){
+        let sphere_a = Sphere::new();
+        let intersection_1 = Intersection::new(-1.0, sphere_a);
+        let intersection_2 = Intersection::new(1.0, sphere_a);
+        let xs = Intersections::new(vec![intersection_2, intersection_1]);
+        let i = xs.hit();
+        assert!(i.t == 1.0);
+    }
+
+    #[test]
+    fn hit_with_all_negative_intersections(){
+        let sphere_a = Sphere::new();
+        let intersection_1 = Intersection::new(-2.0, sphere_a);
+        let intersection_2 = Intersection::new(-1.0, sphere_a);
+        let xs = Intersections::new(vec![intersection_2, intersection_1]);
+        let i = xs.hit();
+        assert!(i == None);
+    }
+
+    #[test]
+    fn hit_with_always_lowest_non_negative_intersections(){
+        let sphere_a = Sphere::new();
+        let intersection_1 = Intersection::new(5.0, sphere_a);
+        let intersection_2 = Intersection::new(7.0, sphere_a);
+        let intersection_3 = Intersection::new(-3.0, sphere_a);
+        let intersection_4 = Intersection::new(2.0, sphere_a);
+        let xs = Intersections::new(vec![intersection_1, intersection_2, intersection_3, intersection_4]);
+        let i = xs.hit();
+        assert!(i.t == 2.0);
+
+    }
 
 }

@@ -6,8 +6,7 @@ use crate::tuple::*;
 use crate::intersection::*;
 use std::ops::{Index, IndexMut, Mul, Sub, };
 
-
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Sphere{
  // somethign
 
@@ -24,7 +23,8 @@ impl Sphere{
     // I sometimes use let dot_computed: f64 = vec_one.dot(vec_two);
     // BUt also dot(vecone, vectwo);
     // Checkl this
-    // Might need to move this function to other struct
+    // Should this function be able to return multiple?
+    // TODO: Check if tests below are still relevant, or only this one.
     pub fn intersect(&self, ray: Ray) -> Vec<Intersection> {
 
         let sphere_to_ray = ray.origin - Tuple::point(0.0, 0.0, 0.0);
@@ -67,6 +67,7 @@ mod tests {
 
     #[test]
     fn ray_intersect_sphere_object_property(){
+        // Changed this test for new property
         let point_a = Tuple::point(0.0, 0.0, -5.0);
         let vector_a = Tuple::vector(0.0, 0.0, 1.0);
         let sphere_a = Sphere::new();

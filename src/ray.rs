@@ -48,7 +48,6 @@ mod tests {
         let new_ray = Ray::new(origin, direction);
         assert!(new_ray.origin == origin);
         assert!(new_ray.direction == direction);
-
     }
 
     #[test]
@@ -80,6 +79,7 @@ mod tests {
 
     }
 
+    #[test]
     fn scale_ray(){
         let origin = Tuple::point(1.0, 2.0, 3.0);
         let direction = Tuple::vector(0.0, 1.0, 0.0);

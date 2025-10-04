@@ -1,0 +1,3 @@
+cargo:rerun-if-changed=build/main.rs
+cargo:rustc-env=TYPENUM_BUILD_CONSTS=/Users/robot/programming/raytracer/target/debug/build/typenum-be745da3f0dcf9e6/out/consts.rs
+cargo:rustc-env=TYPENUM_BUILD_OP=/Users/robot/programming/raytracer/target/debug/build/typenum-be745da3f0dcf9e6/out/op.rs

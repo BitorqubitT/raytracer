@@ -24,7 +24,10 @@ use std::fmt;
 // M * T, works, but is this the right implementation for this raytracer, what if we use diff sizes?
 // Change isequal func and switch it with is equal impl/macro
 
-#[derive(Debug, Clone, PartialEq, PartialOrd)]
+
+//TODO: Get copy trait to work for matrix. Stop using usize -> Work with set sizes
+
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
 pub struct Matrix {
     // CHange this
     // width and height should just check the data
@@ -64,6 +67,18 @@ impl Matrix {
             println!("{:?}", row);
         }
     } 
+
+
+    pub fn is_translation(&self) -> bool {
+         {
+        self.data[0][0] == 1.0 && self.data[1][1] == 1.0 && self.data[2][2] == 1.0 &&
+        self.data[0][1] == 0.0 && self.data[0][2] == 0.0 &&
+        self.data[1][0] == 0.0 && self.data[1][2] == 0.0 &&
+        self.data[2][0] == 0.0 && self.data[2][1] == 0.0 &&
+        self.data[3][0] == 0.0 && self.data[3][1] == 0.0 &&
+        self.data[3][2] == 0.0 && self.data[3][3] == 1.0
+        }
+    }
 
    // When transposing, do we want to keep the old one aswell?
    // I loop, but I can also hardcode it per n*m, this would be faster.
@@ -218,6 +233,17 @@ impl Matrix {
         return matrix_a 
     }
 
+    pub fn is_scaling(&self) -> bool {
+         {
+        self.data[0][0] != 1.0 || self.data[1][1] != 1.0 || self.data[2][2] != 1.0 &&
+        self.data[0][1] == 0.0 && self.data[0][2] == 0.0 &&
+        self.data[1][0] == 0.0 && self.data[1][2] == 0.0 &&
+        self.data[2][0] == 0.0 && self.data[2][1] == 0.0 &&
+        self.data[3][0] == 0.0 && self.data[3][1] == 0.0 &&
+        self.data[3][2] == 0.0 && self.data[3][3] == 1.0
+        }
+    }
+
     pub fn rotation_x(r: f64) -> Matrix {
 
         let cos_r = r.cos();
@@ -297,6 +323,7 @@ impl IndexMut<usize> for Matrix {
     }
 }
 
+// TODO: Clean code only use one type of impl for matmul. Reference only>?
 impl Mul for Matrix {
 
     type Output = Self;
@@ -327,6 +354,70 @@ impl Mul for Matrix {
 }
 
 impl Mul<Tuple> for Matrix {
+    type Output =  Tuple;
+    // For now we go with M * T -> T
+    // And I use my own tuple impl
+    // Might have to change this later.
+    // This impl only works for 4,4 * 1,4
+    fn mul(self, other: Tuple) -> Tuple {
+
+        let mut new_tuple = Tuple::new(0.0, 0.0, 0.0, 0.0);
+
+        for i in 0..self.height {
+            let mut sum = 0.0;
+            for j in 0..self.width {
+
+                match j {
+                0 => sum += self.data[i][j] * other.x,
+                1 => sum += self.data[i][j] * other.y,
+                2 => sum += self.data[i][j] * other.z,
+                3 => sum += self.data[i][j] * other.w,
+                _ => panic!("Matrix dimensions are not compatible")
+                }
+
+            match i {
+            0 => new_tuple.x = sum,
+            1 => new_tuple.y = sum,
+            2 => new_tuple.z = sum,
+            3 => new_tuple.w = sum,
+            _ => panic!("Matrix dimensions are not compatible")
+            }
+            }
+        }
+    return new_tuple
+    }
+}
+
+impl Mul<&Matrix> for &Matrix {
+
+    type Output = Matrix;
+
+    fn mul(self, other: &Matrix) -> Matrix {
+        if self.width != other.height {
+            panic!("Matrix dimensions are not compatible.");
+        }
+        
+        // For now we create a matrix to make the impl work.
+        let matrix_values: Vec<Vec<f64>> = vec![vec![0.0; other.width]; self.height];
+        let mut result = Matrix::new(other.width, self.height, matrix_values);
+
+        for i in 0..self.height {
+            for j in 0..other.width {
+                
+                // Type is i32 for now, don't we need flt64 for matrix?
+                let mut sum= 0.0;
+                for k in 0..self.width {
+                    sum += self.data[i][k] * other.data[k][j];
+                }
+                result.data[i][j] = sum;
+            }
+        }
+    // dont need the return, whats the diff?
+       return result
+    }
+}
+
+impl Mul<Tuple> for &Matrix {
     type Output =  Tuple;
     // For now we go with M * T -> T
     // And I use my own tuple impl

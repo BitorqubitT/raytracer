@@ -1,5 +1,6 @@
 use crate::tuple::Tuple;
 use crate::matrix::Matrix;
+use crate::sphere::Sphere;
 
 pub struct Ray {
     pub origin: Tuple,
@@ -23,28 +24,43 @@ impl Ray {
 
     }
 
-    pub fn transform(&self, translation: Matrix) -> Matrix {
+    pub fn transform(&self, matrix: &Matrix) -> Ray {
+        // We just use a reference to the matrix here
+        let new_origin = matrix * self.origin;
+        let new_direction = matrix * self.direction;
+        Ray::new(new_origin, new_direction)
+    }
 
-        let new_
+
+        // First we check the type
+       // if matrix.is_translation() {
+        //    let new_origin = matrix * self.origin;
+        //    return Ray::new(new_origin, self.direction);
+        //} else if matrix.is_scaling() {
+        //    let new_origin = matrix * self.origin;
+          //  let new_direction = matrix * self.direction;
+            //return Ray::new(new_origin, new_direction);
+        //}
+        // If the matrix is neither a translation nor a scaling matrix, we can still apply it
+
         // The difference lies in what we receive. 
         // Detect this and then act on it
         // return a new ray
-        // page 89 or 69 in book
-        return transformed_ray
-    }
+   // }
 
 }
 
 #[cfg(test)]
 mod tests {
     
+    use std::num::ParseIntError;
+
     use super::*;
 
     #[test]
     fn check_ray_implementation(){
         let origin = Tuple::point(1.0, 2.0, 3.0);
         let direction = Tuple::vector(4.0, 5.0, 6.0);
-
         let new_ray = Ray::new(origin, direction);
         assert!(new_ray.origin == origin);
         assert!(new_ray.direction == direction);
@@ -72,11 +88,9 @@ mod tests {
 
         let translation = Matrix::translation(3.0, 4.0, 5.0);
 
-        // What makes if we do type.function() or function(lala, lala)?
-        let transformed_ray = ray.tranform(translation);
-        assert!(tranformed_ray.origin == Tuple::point(4.0, 6.0, 8.0));
-        assert!(tranformed_ray.direction == Tuple::vector(0.0, 1.0, 0.0));
-
+        let transformed_ray = ray.transform(&translation);
+        assert!(transformed_ray.origin == Tuple::point(4.0, 6.0, 8.0));
+        assert!(transformed_ray.direction == Tuple::vector(0.0, 1.0, 0.0));
     }
 
     #[test]
@@ -84,18 +98,10 @@ mod tests {
         let origin = Tuple::point(1.0, 2.0, 3.0);
         let direction = Tuple::vector(0.0, 1.0, 0.0);
         let ray = Ray::new(origin, direction);
-        // Should this be a vector
         let scaling = Matrix::scaling(2.0, 3.0, 4.0);
-
-        // Apply scaling
-        let transformed_ray = transform(ray, scaling);
-        let tranformed_ray.origin = Tuple::point(4.0, 6.0, 8.0);
-        let tranformed_ray.direction = Tuple::vector(0.0, 1.0, 0.0);
-        assert!(tranformed_ray.origin == Tuple::point(4.0, 6.0, 8.0));
-        assert!(tranformed_ray.direction == Tuple::vector(0.0, 1.0, 0.0));
+        let transformed_ray = ray.transform(&scaling);
+        assert!(transformed_ray.origin == Tuple::point(2.0, 6.0, 12.0));
+        assert!(transformed_ray.direction == Tuple::vector(0.0, 3.0, 0.0));
     }
-
-
-
 
 }

@@ -1,21 +1,44 @@
 use std::mem::Discriminant;
 use std::ptr;
+use std::vec;
 use crate::ray::*;
 use crate::matrix::*;
 use crate::tuple::*;
 use crate::intersection::*;
 use std::ops::{Index, IndexMut, Mul, Sub, };
 
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Sphere{
  // somethign
+    pub transform: Matrix,
 
 }
 
+impl Default for Sphere {
+    fn default() -> Self {
+
+        let identity_m = vec![
+            vec![1.0, 0.0, 0.0, 0.0],
+            vec![0.0, 1.0, 0.0, 0.0],
+            vec![0.0, 0.0, 1.0, 0.0],
+            vec![0.0, 0.0, 0.0, 1.0],
+        ];
+
+        let matrix = Matrix::new(4,4, identity_m);
+
+        Self {
+            transform: matrix,
+
+        }
+    }
+}
+
+
 impl Sphere{
 
-   pub fn new() -> Self {
-        Self {
+   pub fn new(transform: Matrix) -> Self {
+        Sphere {
+            transform,
         }
     }
 
@@ -39,13 +62,26 @@ impl Sphere{
             let t1 = (-b - discriminant.sqrt()) / (2.0 * a);
             let t2 = (-b + discriminant.sqrt()) / (2.0 * a);
             // page 65
-            // Change the *self, we need a pointer to the object
-            let intersect_1 = Intersection::new(t1, *self);
-            let intersect_2 = Intersection::new(t2, *self);
+            // Might need to change this back to *self. instead of clone
+            let intersect_1 = Intersection::new(t1, self.clone());
+            let intersect_2 = Intersection::new(t2, self.clone());
             return vec![intersect_1, intersect_2];
         }
     }
+
+    //CHECK: Should be mut self not &self
+    pub fn set_transform(&self, transform: Matrix) -> Self {
+        // Default is identity matrix
+        //TODO: https://doc.rust-lang.org/std/default/trait.Default.html   refactor
+
+        //TODO: might need to make widht,height an param
+        //let identity_matrix = Matrix::new(4,4, identity_m);
+        self.transform = transform;
+        self
+        //return identity_matrix;
+    }   
 }
+
 
 #[cfg(test)]
 mod tests {
@@ -57,7 +93,7 @@ mod tests {
     fn ray_intersect_sphere_at_two_points(){
         let point_a = Tuple::point(0.0, 0.0, -5.0);
         let vector_a = Tuple::vector(0.0, 0.0, 1.0);
-        let sphere_a = Sphere::new();
+        let sphere_a = Sphere::default();
         let ray_a = Ray::new(point_a, vector_a);
         let xs = sphere_a.intersect(ray_a);
         assert!(xs.len() == 2);
@@ -70,7 +106,7 @@ mod tests {
         // Changed this test for new property
         let point_a = Tuple::point(0.0, 0.0, -5.0);
         let vector_a = Tuple::vector(0.0, 0.0, 1.0);
-        let sphere_a = Sphere::new();
+        let sphere_a = Sphere::default();
         let ray_a = Ray::new(point_a, vector_a);
         let xs = sphere_a.intersect(ray_a);
         // Clean this up.
@@ -85,7 +121,7 @@ mod tests {
     fn ray_intersect_sphere_at_tangent(){
         let point_a = Tuple::point(0.0, 1.0, -5.0);
         let vector_a = Tuple::vector(0.0, 0.0, 1.0);
-        let sphere_a = Sphere::new();
+        let sphere_a = Sphere::default();
         let ray_a = Ray::new(point_a, vector_a);
         let xs = sphere_a.intersect(ray_a);
         // Clean this up.
@@ -98,7 +134,7 @@ mod tests {
     fn ray_misses_a_sphere(){
         let point_a = Tuple::point(0.0, 2.0, -5.0);
         let vector_a = Tuple::vector(0.0, 0.0, 1.0);
-        let sphere_a = Sphere::new();
+        let sphere_a = Sphere::default();
         let ray_a = Ray::new(point_a, vector_a);
         let xs = sphere_a.intersect(ray_a);
         assert!(xs.len() == 0);
@@ -108,7 +144,7 @@ mod tests {
     fn ray_originates_inside_sphere(){
         let point_a = Tuple::point(0.0, 0.0, 0.0);
         let vector_a = Tuple::vector(0.0, 0.0, 1.0);
-        let sphere_a = Sphere::new();
+        let sphere_a = Sphere::default();
         let ray_a = Ray::new(point_a, vector_a);
         let xs = sphere_a.intersect(ray_a);
         assert!(xs.len() == 2);
@@ -120,7 +156,7 @@ mod tests {
     fn sphere_is_behind_ray(){
         let point_a = Tuple::point(0.0, 0.0, 5.0);
         let vector_a = Tuple::vector(0.0, 0.0, 1.0);
-        let sphere_a = Sphere::new();
+        let sphere_a = Sphere::default();
         let ray_a = Ray::new(point_a, vector_a);
         let xs = sphere_a.intersect(ray_a);
         assert!(xs.len() == 2);
@@ -128,8 +164,30 @@ mod tests {
         assert!(xs[1].t == -4.0);
     }
 
+    //page 69
+    #[test]
+    fn sphere_default_transform(){
+        let s = Sphere::default();
+        let identity_m = vec![
+            vec![1.0, 0.0, 0.0, 0.0],
+            vec![0.0, 1.0, 0.0, 0.0],
+            vec![0.0, 0.0, 1.0, 0.0],
+            vec![0.0, 0.0, 0.0, 1.0],
+        ];
+        let identity_matrix = Matrix::new(4,4, identity_m);
+
+        assert!(s.transform == identity_matrix);
+    }
+
+    #[test]
+    fn change_sphere_transform(){
+        let mut s = Sphere::default();
+        let translation_matrix = Matrix::translation(2.0, 3.0, 4.0);
+        
+        let translation_s = s.set_transform(translation_matrix);
+        assert!(translation_s.transform == translation_matrix);
+    }
+
+
+
 }
-
-
-
-

@@ -27,8 +27,8 @@ use std::fmt;
 
 //TODO: Get copy trait to work for matrix. Stop using usize -> Work with set sizes
 
-#[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
-pub struct Matrix {
+#[derive(Debug, Clone, PartialEq, PartialOrd)]
+pub struct DynMatrix {
     // CHange this
     // width and height should just check the data
     pub width: usize,

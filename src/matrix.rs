@@ -1,5 +1,6 @@
 use std::ops::{Index, IndexMut, Mul, Sub, };
 use std::cmp::PartialEq;
+use std::convert::From;
 use crate::tuple::Tuple;
 use crate::approx_eq::*;
 use std::f64::consts::PI;
@@ -36,30 +37,33 @@ pub struct DynMatrix {
     pub data: Vec<Vec<f64>>,
     }
 
-// Looks like its better to create matrices from native types
-impl Matrix {
+#[derive(Debug, Copy, Clone, PartialEq)]
+pub struct Matrix<const D: usize> {
+  data: [[f64; D]; D],
+}
 
-    // f64 instead of i32???
-    pub fn new(width: usize, height: usize, data: Vec<Vec<f64>>) -> Self {
-        Self {
-            width,
-            height,
-            data,
-        }
+
+impl<const D: usize> From<[[f64; D]; D]> for Matrix<D> {
+    fn from(data: [[f64; D]; D]) -> Self {
+        Matrix { data }
     }
+}
 
-    pub fn translation(x: f64, y: f64, z: f64) -> Matrix {
+//impl<const D: usize> Matrix<D> {
+// pub fn new() -> Matrix<D> {
+//   Matrix::from([[0.0; D]; D])
+//  }
 
-       let matrix_values = vec![
-            vec![1.0, 0.0, 0.0, x],
-            vec![0.0, 1.0, 0.0, y],
-            vec![0.0, 0.0, 1.0, z],
-            vec![0.0, 0.0, 0.0, 1.0],
-        ];
+// Looks like its better to create matrices from native types
+impl Matrix<4> {
 
-        let matrix_a = Matrix::new(4, 4, matrix_values);
-
-        return matrix_a
+    pub fn translation(x: f64, y: f64, z: f64) -> Matrix<4> {
+        Matrix::from([
+            [1.0, 0.0, 0.0, x],
+            [0.0, 1.0, 0.0, y],
+            [0.0, 0.0, 1.0, z],
+            [0.0, 0.0, 0.0, 1.0],
+        ])
     }
 
     pub fn display(&self) {
@@ -67,7 +71,6 @@ impl Matrix {
             println!("{:?}", row);
         }
     } 
-
 
     pub fn is_translation(&self) -> bool {
          {
@@ -83,40 +86,29 @@ impl Matrix {
    // When transposing, do we want to keep the old one aswell?
    // I loop, but I can also hardcode it per n*m, this would be faster.
    // Check output type.
-   pub fn transpose(&self) -> Self {
-        let mut transposed_matrix_values = vec![];
-
-        for j in 0..self.width {
-            // let mut row = Vec::with_capacity(self.height + 1); // capacity set for better performance
-            let mut row = vec![];    
-            for i in 0..self.height {
-                row.push(self.data[i][j])
+   pub fn transpose(&self) -> Matrix<D> {
+        let mut matrix = Matrix::from([[0.0; D]; D]);
+        for row in 0..D{
+            for col in 0..D{
+                matrix.data[row][col] = self.data[col][row];
             }
-        transposed_matrix_values.push(row);
         }
-    
-    let transposed_matrix = Matrix::new(self.width, self.height, transposed_matrix_values);
-    return transposed_matrix
+        matrix
+    }
    }
 
    pub fn determinant(&self) -> f64 {
         
-        if self.width == 2 || self.height == 2 {
-            let determinant = self.data[0][0] * self.data[1][1] - self.data[0][1] * self.data[1][0]; 
+        let mut determinant = 0.0;
 
-            return determinant
-        }
-        else {
-           let mut determinant = 0.0;
+        for j in 0..D {
+            determinant += (self[0][j] * self.cofactor(0, j));
 
-           for j in 0..self.width {
-                determinant = determinant + (self[0][j] * self.cofactor(0, j));
-
-           } 
-            return determinant
-        }
-
+        } 
+        return determinant
    }
+
+   //TODO: START REFACTORING FROM HERE--------------------
 
     // Remove this code if I dont end up using approx eq
     pub fn abs(&self) -> Matrix {
